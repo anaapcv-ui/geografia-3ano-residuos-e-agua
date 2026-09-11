@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resumo 🗺️ — Expedição Planeta Azul</title>
+<style>
+  :root{
+    --azul:#1b74c4; --azul-esc:#0d4d86; --verde:#2fa66a; --verde-esc:#1e7d4d;
+    --areia:#f6ecd2; --sol:#ffb703; --coral:#ef6f53; --txt:#2a2a2a; --branco:#fffdf7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Comic Sans MS','Segoe UI',sans-serif;color:var(--txt);
+    background:linear-gradient(180deg,#bfe6ff 0%,#dff3e6 40%,var(--areia) 100%);
+    background-attachment:fixed;line-height:1.55;padding-bottom:60px}
+  .nav{position:sticky;top:0;z-index:50;background:var(--azul-esc);
+    display:flex;flex-wrap:wrap;gap:4px;justify-content:center;padding:8px;box-shadow:0 3px 10px rgba(0,0,0,.25)}
+  .nav a{color:#fff;text-decoration:none;font-weight:bold;font-size:.85rem;padding:7px 11px;border-radius:20px;background:rgba(255,255,255,.12)}
+  .nav a:hover,.nav a.atual{background:var(--sol);color:#333}
+  header.hero{text-align:center;padding:26px 16px 10px}
+  header.hero .selo{font-size:.9rem;color:var(--verde-esc);font-weight:bold;letter-spacing:1px}
+  header.hero h1{font-size:2rem;color:var(--azul-esc);margin:6px 0;text-shadow:1px 1px 0 #fff}
+  .mascote{font-size:3rem}
+  main{max-width:860px;margin:0 auto;padding:0 14px}
+  h2.sec{color:var(--azul-esc);margin:26px 0 10px;font-size:1.4rem;text-align:center}
+  /* FLUXO / LINHA */
+  .fluxo{display:flex;flex-wrap:wrap;align-items:stretch;justify-content:center;gap:8px;margin:10px 0}
+  .passo{background:var(--branco);border:3px solid var(--verde);border-radius:14px;padding:12px;
+    width:150px;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,.1)}
+  .passo .n{background:var(--verde);color:#fff;border-radius:50%;width:26px;height:26px;
+    display:inline-flex;align-items:center;justify-content:center;font-weight:bold;margin-bottom:6px}
+  .passo .emo{font-size:1.6rem;display:block}
+  .passo b{color:var(--verde-esc)}
+  .seta-fluxo{display:flex;align-items:center;font-size:1.6rem;color:var(--azul)}
+  .fluxo.agua .passo{border-color:var(--azul)}
+  .fluxo.agua .passo .n{background:var(--azul)}
+  .fluxo.agua .passo b{color:var(--azul-esc)}
+  /* DATAS */
+  .datas{max-width:640px;margin:10px auto;border-left:5px solid var(--coral);padding-left:16px}
+  .datas .item{margin:12px 0;position:relative}
+  .datas .item::before{content:'';position:absolute;left:-22px;top:4px;width:12px;height:12px;
+    background:var(--coral);border-radius:50%;border:3px solid #fff}
+  .datas .ano{font-weight:bold;color:var(--coral);font-size:1.1rem}
+  /* GRADE PALAVRAS */
+  .grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin:10px 0}
+  .card{background:var(--branco);border-radius:14px;padding:12px 14px;box-shadow:0 4px 10px rgba(0,0,0,.1);
+    border-top:6px solid var(--sol)}
+  .card b{color:var(--azul-esc);display:block;margin-bottom:4px;font-size:1.05rem}
+  /* DICAS post-it */
+  .postits{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin:10px 0}
+  .postit{background:#fff59d;width:210px;padding:14px;border-radius:4px;box-shadow:2px 4px 8px rgba(0,0,0,.2);
+    transform:rotate(-2deg);font-size:.96rem}
+  .postit:nth-child(even){background:#a5d6f7;transform:rotate(2deg)}
+  .postit:nth-child(3n){background:#c5e1a5;transform:rotate(-1deg)}
+  .postit b{display:block;margin-bottom:4px}
+  /* MINI QUIZ RELAMPAGO */
+  .rel{max-width:700px;margin:0 auto}
+  .flash{background:var(--branco);border-radius:12px;margin:9px 0;padding:12px 14px;cursor:pointer;
+    box-shadow:0 3px 8px rgba(0,0,0,.1);border-left:8px solid var(--azul)}
+  .flash .p{font-weight:bold;color:var(--azul-esc)}
+  .flash .r{display:none;margin-top:8px;color:var(--verde-esc);font-weight:bold}
+  .flash.aberta .r{display:block;animation:fade .3s}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .flash .dica{font-size:.8rem;color:#888}
+  /* BOTAO JOGO */
+  .cta{text-align:center;margin:34px 0}
+  .cta a{display:inline-block;background:linear-gradient(90deg,var(--coral),var(--sol));color:#fff;
+    text-decoration:none;font-weight:bold;font-size:1.2rem;padding:16px 30px;border-radius:30px;
+    box-shadow:0 6px 16px rgba(0,0,0,.25)}
+  .cta a:hover{transform:scale(1.05)}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html">🏠 Início</a>
+  <a href="mapa_mental.html">🧠 Mapa Mental</a>
+  <a href="leitura_guiada.html">📖 Leitura Guiada</a>
+  <a href="resumo.html" class="atual">🗺️ Resumo</a>
+  <a href="jogo_vf.html">✅ Verdadeiro ou Falso</a>
+  <a href="simulado.html">📝 Simulado</a>
+</nav>
+
+<header class="hero">
+  <span class="mascote">🗺️🧭</span><br>
+  <span class="selo">EXPEDIÇÃO PLANETA AZUL • 3º ANO • GEOGRAFIA</span>
+  <h1>🗺️ Resumo da Expedição</h1>
+  <p>Revisão rapidinha antes da prova! Leia os fluxos, decore as dicas dos post-its e teste
+  a memória no quiz-relâmpago. 🚀</p>
+</header>
+
+<main>
+
+<h2 class="sec">♻️ O caminho do resíduo reciclável</h2>
+<div class="fluxo">
+  <div class="passo"><span class="n">1</span><span class="emo">🗑️</span><b>Descarte</b><br>separo o resíduo em casa</div>
+  <div class="seta-fluxo">➡️</div>
+  <div class="passo"><span class="n">2</span><span class="emo">🚛</span><b>Coleta seletiva</b><br>a prefeitura recolhe</div>
+  <div class="seta-fluxo">➡️</div>
+  <div class="passo"><span class="n">3</span><span class="emo">🔍</span><b>Triagem</b><br>separam por tipo de material</div>
+  <div class="seta-fluxo">➡️</div>
+  <div class="passo"><span class="n">4</span><span class="emo">🏭</span><b>Reciclagem</b><br>vira nova matéria-prima</div>
+</div>
+
+<h2 class="sec">💧 O caminho da água na usina hidrelétrica</h2>
+<div class="fluxo agua">
+  <div class="passo"><span class="n">1</span><span class="emo">🌊</span><b>Reservatório</b><br>a água fica guardada</div>
+  <div class="seta-fluxo">➡️</div>
+  <div class="passo"><span class="n">2</span><span class="emo">🧱</span><b>Barragem</b><br>segura e libera a água</div>
+  <div class="seta-fluxo">➡️</div>
+  <div class="passo"><span class="n">3</span><span class="emo">🌀</span><b>Turbina</b><br>a água gira a turbina</div>
+  <div class="seta-fluxo">➡️</div>
+  <div class="passo"><span class="n">4</span><span class="emo">⚡</span><b>Gerador</b><br>vira energia elétrica</div>
+  <div class="seta-fluxo">➡️</div>
+  <div class="passo"><span class="n">5</span><span class="emo">🗼</span><b>Transmissão</b><br>chega ao campo e à cidade</div>
+</div>
+
+<h2 class="sec">📅 Fatos e números para lembrar</h2>
+<div class="datas">
+  <div class="item"><span class="ano">2023</span> — o acesso à água virou <b>direito fundamental</b> na Constituição do Brasil.</div>
+  <div class="item"><span class="ano">Rio Jundiaí</span> — foi o <b>1º rio do Brasil a ser despoluído</b>.</div>
+  <div class="item"><span class="ano">3 em 10</span> — pessoas no mundo <b>não têm água potável</b> em casa.</div>
+  <div class="item"><span class="ano">1 tonelada</span> de papel reciclado evita cortar <b>quase 20 árvores</b> e economiza <b>10 mil litros de água</b>.</div>
+</div>
+
+<h2 class="sec">🔑 Palavras-chave (decore estas!)</h2>
+<div class="grade">
+  <div class="card"><b>Lixo</b>Material que NÃO pode ser reaproveitado.</div>
+  <div class="card"><b>Resíduo</b>Descartado que PODE ser reciclado/reaproveitado.</div>
+  <div class="card"><b>Coleta seletiva</b>Separar o resíduo por tipo de material.</div>
+  <div class="card"><b>Triagem</b>Separar objetos por características (material).</div>
+  <div class="card"><b>Lixão</b>Resíduo a céu aberto; polui muito; proibido por lei.</div>
+  <div class="card"><b>Aterro sanitário</b>Tem camada impermeável; polui menos que o lixão.</div>
+  <div class="card"><b>Poluição</b>Mudança prejudicial à natureza e aos seres vivos.</div>
+  <div class="card"><b>Despoluição</b>Recuperar um lugar que estava poluído.</div>
+  <div class="card"><b>3 Rs</b>Reduzir, Reutilizar e Reciclar.</div>
+  <div class="card"><b>Água potável</b>Água segura para beber (consumo humano).</div>
+  <div class="card"><b>Palafita</b>Casa sobre estacas, acima da água (ribeirinhos).</div>
+  <div class="card"><b>Cisterna</b>Reservatório que guarda a água da chuva.</div>
+  <div class="card"><b>Irrigação</b>Fornecer água às plantas de forma artificial.</div>
+  <div class="card"><b>Usina hidrelétrica</b>Usa a força da água para gerar energia.</div>
+</div>
+
+<h2 class="sec">📌 Dicas de prova</h2>
+<div class="postits">
+  <div class="postit"><b>🟧 Lixeira laranja</b>Pilhas e baterias = resíduos perigosos!</div>
+  <div class="postit"><b>♻️ 3 Rs</b>Reduzir → Reutilizar → Reciclar.</div>
+  <div class="postit"><b>🌫️ 3 poluições</b>Do ar, da água e do solo.</div>
+  <div class="postit"><b>🌧️ Bueiro entupido</b>= alagamento na chuva forte.</div>
+  <div class="postit"><b>💧 Regiões</b>Amazônia = muitos rios; Nordeste seco = cisternas.</div>
+  <div class="postit"><b>🚜 Irrigação</b>Manual (regador) x Mecanizada (máquina).</div>
+  <div class="postit"><b>⚡ Energia limpa</b>Hidrelétrica NÃO polui o ar, mas inunda áreas.</div>
+  <div class="postit"><b>🥤 Reciclar</b>Resíduo vira MATÉRIA-PRIMA nova.</div>
+</div>
+
+<h2 class="sec">⚡ Quiz-relâmpago (clique para ver a resposta)</h2>
+<div class="rel" id="rel"></div>
+
+<div class="cta">
+  <a href="jogo_vf.html">🎮 Quero jogar Verdadeiro ou Falso! →</a>
+</div>
+
+</main>
+
+<script>
+const FLASH=[
+  ['Lixo e resíduo são a mesma coisa?','NÃO! Resíduo pode ser reaproveitado; lixo, não.'],
+  ['Onde vão as pilhas e baterias?','Na lixeira laranja (são resíduos perigosos).'],
+  ['O lixão é permitido por lei?','NÃO. O certo é o aterro sanitário (que polui menos).'],
+  ['Quais são os 3 R’s?','Reduzir, Reutilizar e Reciclar.'],
+  ['O que é poluição?','Toda mudança prejudicial à natureza e aos seres vivos.'],
+  ['Qual foi o 1º rio do Brasil despoluído?','O rio Jundiaí.'],
+  ['O que é água potável?','Água segura para o consumo humano (dá para beber).'],
+  ['Como se chama a casa dos ribeirinhos, sobre a água?','Palafita.'],
+  ['Para que serve a cisterna?','Guardar a água da chuva em regiões de pouca chuva.'],
+  ['Qual é a principal fonte de energia do Brasil?','A usina hidrelétrica (força da água).'],
+  ['Irrigação com máquina em fazenda grande é qual tipo?','Mecanizada.'],
+  ['Em que ano a água virou direito fundamental no Brasil?','Em 2023.']
+];
+const rel=document.getElementById('rel');
+FLASH.forEach(f=>{
+  const d=document.createElement('div'); d.className='flash';
+  d.innerHTML=`<div class="p">❓ ${f[0]} <span class="dica">(clique)</span></div><div class="r">✅ ${f[1]}</div>`;
+  d.addEventListener('click',()=>d.classList.toggle('aberta'));
+  rel.appendChild(d);
+});
+</script>
+</body>
+</html>
