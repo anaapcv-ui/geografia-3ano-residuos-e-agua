@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verdadeiro ou Falso ✅ — Expedição Planeta Azul</title>
+<style>
+  :root{
+    --azul:#1b74c4; --azul-esc:#0d4d86; --verde:#2fa66a; --verde-esc:#1e7d4d;
+    --areia:#f6ecd2; --sol:#ffb703; --coral:#ef6f53; --txt:#2a2a2a; --branco:#fffdf7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Comic Sans MS','Segoe UI',sans-serif;color:var(--txt);
+    background:linear-gradient(180deg,#bfe6ff 0%,#dff3e6 40%,var(--areia) 100%);
+    background-attachment:fixed;line-height:1.5;padding-bottom:60px}
+  .nav{position:sticky;top:0;z-index:50;background:var(--azul-esc);
+    display:flex;flex-wrap:wrap;gap:4px;justify-content:center;padding:8px;box-shadow:0 3px 10px rgba(0,0,0,.25)}
+  .nav a{color:#fff;text-decoration:none;font-weight:bold;font-size:.85rem;padding:7px 11px;border-radius:20px;background:rgba(255,255,255,.12)}
+  .nav a:hover,.nav a.atual{background:var(--sol);color:#333}
+  header.hero{text-align:center;padding:22px 16px 6px}
+  header.hero .selo{font-size:.9rem;color:var(--verde-esc);font-weight:bold;letter-spacing:1px}
+  header.hero h1{font-size:2rem;color:var(--azul-esc);margin:6px 0;text-shadow:1px 1px 0 #fff}
+  .mascote{font-size:3rem}
+  .jogo{max-width:680px;margin:10px auto;padding:0 14px}
+  .topo{display:flex;justify-content:space-between;align-items:center;background:var(--branco);
+    border-radius:14px;padding:10px 16px;box-shadow:0 4px 10px rgba(0,0,0,.12);font-weight:bold;color:var(--azul-esc)}
+  .topo .estrelas{font-size:1.1rem}
+  .barra{height:16px;background:#e6e6e6;border-radius:10px;overflow:hidden;margin:12px 0}
+  .barra > div{height:100%;width:0;background:linear-gradient(90deg,var(--verde),var(--azul));transition:width .4s}
+  .carta{background:var(--branco);border-radius:20px;padding:26px 22px;margin:14px 0;text-align:center;
+    box-shadow:0 8px 22px rgba(0,0,0,.15);min-height:170px;display:flex;flex-direction:column;justify-content:center}
+  .carta .frase{font-size:1.25rem;font-weight:bold;color:var(--txt);margin-bottom:8px}
+  .botoes{display:flex;gap:14px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+  .botoes button{border:none;border-radius:26px;padding:14px 30px;font-size:1.15rem;font-weight:bold;
+    cursor:pointer;font-family:inherit;color:#fff;box-shadow:0 4px 10px rgba(0,0,0,.2)}
+  .bt-v{background:var(--verde)}.bt-v:hover{background:var(--verde-esc)}
+  .bt-f{background:var(--coral)}.bt-f:hover{background:#d4553c}
+  .explica{display:none;margin-top:16px;padding:14px;border-radius:14px;font-weight:bold}
+  .explica.ok{background:#d7f5e1;color:var(--verde-esc);display:block}
+  .explica.nao{background:#ffdad4;color:#c0392b;display:block}
+  .bt-prox{background:var(--azul);color:#fff;border:none;border-radius:26px;padding:12px 26px;
+    font-size:1.05rem;font-weight:bold;cursor:pointer;font-family:inherit;margin-top:14px;display:none}
+  .bt-prox:hover{background:var(--azul-esc)}
+  /* FINAL */
+  .final{display:none;text-align:center;background:var(--branco);border-radius:20px;padding:30px 22px;
+    box-shadow:0 8px 22px rgba(0,0,0,.15);margin:14px 0}
+  .final .trofeu{font-size:4rem}
+  .final h2{color:var(--azul-esc);font-size:1.6rem;margin:8px 0}
+  .final .nota{font-size:1.3rem;font-weight:bold;margin:10px 0}
+  .final .msg{font-size:1.1rem;margin:10px 0;color:var(--verde-esc)}
+  .final button,.final a{display:inline-block;background:var(--sol);color:#333;border:none;border-radius:26px;
+    padding:13px 26px;font-size:1.05rem;font-weight:bold;cursor:pointer;font-family:inherit;margin:8px 6px;text-decoration:none}
+  .final button:hover,.final a:hover{background:#e0a000}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html">🏠 Início</a>
+  <a href="mapa_mental.html">🧠 Mapa Mental</a>
+  <a href="leitura_guiada.html">📖 Leitura Guiada</a>
+  <a href="resumo.html">🗺️ Resumo</a>
+  <a href="jogo_vf.html" class="atual">✅ Verdadeiro ou Falso</a>
+  <a href="simulado.html">📝 Simulado</a>
+</nav>
+
+<header class="hero">
+  <span class="mascote">🦜✅❌</span><br>
+  <span class="selo">EXPEDIÇÃO PLANETA AZUL • 3º ANO • GEOGRAFIA</span>
+  <h1>✅ Verdadeiro ou Falso ❌</h1>
+  <p>O papagaio Zé Rio vai soltar 12 frases sorteadas. Diga se cada uma é <b>VERDADEIRA</b> ou
+  <b>FALSA</b>. Vamos ver quantas estrelas você ganha! ⭐</p>
+</header>
+
+<div class="jogo">
+  <div class="topo">
+    <span id="contador">Frase 1 de 12</span>
+    <span class="estrelas" id="estrelas">Acertos: 0</span>
+  </div>
+  <div class="barra"><div id="fill"></div></div>
+
+  <div class="carta" id="carta">
+    <div class="frase" id="frase">...</div>
+    <div class="botoes" id="botoes">
+      <button class="bt-v" id="btV">✅ Verdadeiro</button>
+      <button class="bt-f" id="btF">❌ Falso</button>
+    </div>
+    <div class="explica" id="explica"></div>
+    <button class="bt-prox" id="btProx">Próxima ➡️</button>
+  </div>
+
+  <div class="final" id="final">
+    <div class="trofeu" id="trofeu">🏆</div>
+    <h2 id="finalTit">Fim do jogo!</h2>
+    <div class="nota" id="finalNota"></div>
+    <div class="msg" id="finalMsg"></div>
+    <button id="btDeNovo">🔄 Jogar de novo</button>
+    <a href="simulado.html">Ir para o Simulado 📝 →</a>
+  </div>
+</div>
+
+<script>
+/* Banco com 24 frases (o jogo sorteia 12) — conteúdo do livro Cap. 9 e 10 */
+const BANCO=[
+  ['Resíduo é um material que pode ser reciclado ou reaproveitado.',true,'Verdadeiro! Resíduo pode virar nova matéria-prima.'],
+  ['Lixo e resíduo são exatamente a mesma coisa.',false,'Falso! Lixo não pode ser reaproveitado; resíduo pode.'],
+  ['Restos de comida e grama cortada são resíduos orgânicos.',true,'Verdadeiro! Orgânicos = restos de alimento, poda e grama.'],
+  ['Papel, plástico, metal e vidro são resíduos recicláveis.',true,'Verdadeiro! Esses são os recicláveis mais comuns.'],
+  ['Pilhas e baterias podem ser jogadas no lixo comum.',false,'Falso! Elas são perigosas e vão na lixeira laranja.'],
+  ['Coleta seletiva é separar os resíduos por tipo de material.',true,'Verdadeiro! É exatamente isso.'],
+  ['O lixão é permitido pela lei brasileira.',false,'Falso! Os lixões são proibidos por lei.'],
+  ['No aterro sanitário há uma camada impermeável que evita vazamentos.',true,'Verdadeiro! Por isso ele polui menos que o lixão.'],
+  ['O aterro sanitário polui mais que o lixão.',false,'Falso! O aterro polui MENOS que o lixão.'],
+  ['Poluição é toda mudança prejudicial à natureza e aos seres vivos.',true,'Verdadeiro! Essa é a definição de poluição.'],
+  ['Existem três tipos de poluição: do ar, da água e do solo.',true,'Verdadeiro! Ar, água e solo.'],
+  ['Jogar resíduo na rua pode entupir bueiros e causar alagamentos.',true,'Verdadeiro! Bueiro entupido causa alagamento na chuva.'],
+  ['O rio Jundiaí foi o primeiro rio do Brasil a ser despoluído.',true,'Verdadeiro! Ele é o primeiro rio despoluído do Brasil.'],
+  ['Os 3 Rs são: Reduzir, Reutilizar e Reciclar.',true,'Verdadeiro! São os três Rs.'],
+  ['Reciclar é transformar o resíduo em uma nova matéria-prima.',true,'Verdadeiro! Reciclar = virar matéria-prima nova.'],
+  ['Água potável é uma água suja, imprópria para beber.',false,'Falso! Água potável é segura para o consumo humano.'],
+  ['No Amazonas e no Pará há muitos rios e chove bastante.',true,'Verdadeiro! Lá há muitos rios e chuvas frequentes.'],
+  ['A palafita é uma casa construída sobre estacas, acima da água.',true,'Verdadeiro! É a casa dos ribeirinhos.'],
+  ['A cisterna serve para guardar a água da chuva.',true,'Verdadeiro! Muito usada onde chove pouco.'],
+  ['Em 2023, o acesso à água virou um direito fundamental no Brasil.',true,'Verdadeiro! Entrou na Constituição em 2023.'],
+  ['Desperdiçar água não causa nenhum problema.',false,'Falso! Causa problemas ambientais e sociais.'],
+  ['A usina hidrelétrica usa a força da água para gerar energia.',true,'Verdadeiro! É a principal fonte de energia do Brasil.'],
+  ['A energia da hidrelétrica é limpa, mas inunda áreas e desloca famílias.',true,'Verdadeiro! É limpa, porém tem impactos.'],
+  ['A indústria usa água na produção, no resfriamento das máquinas e na limpeza.',true,'Verdadeiro! São os três usos na indústria.'],
+  ['Irrigação mecanizada é feita com regador, em fazendas pequenas.',false,'Falso! Regador é a manual; a mecanizada usa máquinas em grandes fazendas.'],
+  ['Ferver e filtrar a água ajuda a evitar doenças.',true,'Verdadeiro! Mesmo parecendo limpa, a água pode estar contaminada.']
+];
+
+const N=12;
+let rodada=[], idx=0, acertos=0, respondida=false;
+
+function embaralha(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function novaRodada(){
+  rodada=embaralha(BANCO).slice(0,N);
+  idx=0; acertos=0; respondida=false;
+  document.getElementById('final').style.display='none';
+  document.getElementById('carta').style.display='flex';
+  mostra();
+}
+function mostra(){
+  respondida=false;
+  const f=rodada[idx];
+  document.getElementById('frase').textContent=f[0];
+  document.getElementById('contador').textContent='Frase '+(idx+1)+' de '+N;
+  document.getElementById('estrelas').textContent='Acertos: '+acertos;
+  document.getElementById('fill').style.width=Math.round(idx/N*100)+'%';
+  document.getElementById('botoes').style.display='flex';
+  document.getElementById('explica').style.display='none';
+  document.getElementById('explica').className='explica';
+  document.getElementById('btProx').style.display='none';
+  document.getElementById('btV').disabled=false;
+  document.getElementById('btF').disabled=false;
+}
+function responder(resp){
+  if(respondida) return; respondida=true;
+  const f=rodada[idx]; const certo=(resp===f[1]);
+  if(certo) acertos++;
+  const ex=document.getElementById('explica');
+  ex.className='explica '+(certo?'ok':'nao');
+  ex.textContent=(certo?'🎉 Acertou! ':'🤔 Ops! ')+f[2];
+  document.getElementById('estrelas').textContent='Acertos: '+acertos;
+  document.getElementById('btV').disabled=true;
+  document.getElementById('btF').disabled=true;
+  document.getElementById('btProx').style.display='inline-block';
+  document.getElementById('btProx').textContent = (idx<N-1)?'Próxima ➡️':'Ver meu resultado 🏆';
+}
+function proxima(){
+  if(idx<N-1){ idx++; mostra(); } else { fim(); }
+}
+function fim(){
+  document.getElementById('carta').style.display='none';
+  const fin=document.getElementById('final'); fin.style.display='block';
+  const pct=Math.round(acertos/N*100);
+  const est=Math.max(1,Math.round(acertos/N*5));
+  document.getElementById('fill').style.width='100%';
+  document.getElementById('finalNota').innerHTML='Você acertou <b>'+acertos+' de '+N+'</b> ('+pct+'%)<br>'+'⭐'.repeat(est)+'☆'.repeat(5-est);
+  let msg, trof;
+  if(pct>=80){ msg='Incrível, explorador(a)! Você domina o Planeta Azul! 🌍'; trof='🏆'; }
+  else if(pct>=50){ msg='Muito bem! Revise o Resumo e você fica craque! 💪'; trof='🥈'; }
+  else { msg='Vamos treinar mais um pouquinho! Releia a Leitura Guiada. 🚀'; trof='🌱'; }
+  document.getElementById('finalMsg').textContent=msg;
+  document.getElementById('trofeu').textContent=trof;
+}
+document.getElementById('btV').onclick=()=>responder(true);
+document.getElementById('btF').onclick=()=>responder(false);
+document.getElementById('btProx').onclick=proxima;
+document.getElementById('btDeNovo').onclick=novaRodada;
+novaRodada();
+</script>
+</body>
+</html>
