@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leitura Guiada 📖 — Expedição Planeta Azul</title>
+<style>
+  :root{
+    --azul:#1b74c4; --azul-esc:#0d4d86; --verde:#2fa66a; --verde-esc:#1e7d4d;
+    --areia:#f6ecd2; --kraft:#e9d9b0; --sol:#ffb703; --coral:#ef6f53;
+    --terra:#7a5230; --txt:#2a2a2a; --branco:#fffdf7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Comic Sans MS','Segoe UI',sans-serif;color:var(--txt);
+    background:linear-gradient(180deg,#bfe6ff 0%,#dff3e6 40%,var(--areia) 100%);
+    background-attachment:fixed;line-height:1.55;padding-bottom:60px}
+  /* NAV */
+  .nav{position:sticky;top:0;z-index:50;background:var(--azul-esc);
+    display:flex;flex-wrap:wrap;gap:4px;justify-content:center;padding:8px;
+    box-shadow:0 3px 10px rgba(0,0,0,.25)}
+  .nav a{color:#fff;text-decoration:none;font-weight:bold;font-size:.85rem;
+    padding:7px 11px;border-radius:20px;background:rgba(255,255,255,.12)}
+  .nav a:hover{background:var(--sol);color:#333}
+  .nav a.atual{background:var(--sol);color:#333}
+  /* HERO */
+  header.hero{text-align:center;padding:26px 16px 18px}
+  header.hero .selo{font-size:.9rem;color:var(--verde-esc);font-weight:bold;letter-spacing:1px}
+  header.hero h1{font-size:2rem;color:var(--azul-esc);margin:6px 0;text-shadow:1px 1px 0 #fff}
+  header.hero p{max-width:640px;margin:6px auto;font-size:1.05rem}
+  .mascote{font-size:3rem;display:block}
+  /* PROGRESSO */
+  .painel{position:sticky;top:46px;z-index:40;max-width:820px;margin:0 auto 10px;
+    background:var(--branco);border:3px solid var(--verde);border-radius:16px;
+    padding:10px 14px;box-shadow:0 4px 12px rgba(0,0,0,.12);
+    display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center}
+  .barra{flex:1;min-width:180px;height:20px;background:#e6e6e6;border-radius:12px;overflow:hidden}
+  .barra > div{height:100%;width:0;background:linear-gradient(90deg,var(--verde),var(--azul));
+    transition:width .5s;border-radius:12px}
+  .estrelas{font-size:1.2rem;letter-spacing:2px}
+  .placar{font-weight:bold;color:var(--azul-esc)}
+  /* BLOCOS */
+  main{max-width:820px;margin:0 auto;padding:0 14px}
+  .bloco{background:var(--branco);border-radius:18px;margin:16px 0;overflow:hidden;
+    box-shadow:0 5px 16px rgba(0,0,0,.12);border-left:12px solid var(--cor,#ccc)}
+  .bloco .cab{cursor:pointer;padding:16px 18px;display:flex;align-items:center;gap:12px;
+    background:var(--cor,#eee);color:#fff}
+  .bloco .cab .emo{font-size:1.8rem}
+  .bloco .cab h2{font-size:1.15rem;flex:1;text-shadow:1px 1px 2px rgba(0,0,0,.25)}
+  .bloco .cab .seta{font-size:1.3rem;transition:transform .3s}
+  .bloco.aberto .cab .seta{transform:rotate(90deg)}
+  .bloco.travado{opacity:.55;filter:grayscale(.4)}
+  .bloco.travado .cab{cursor:not-allowed}
+  .corpo{display:none;padding:16px 18px}
+  .bloco.aberto .corpo{display:block;animation:abre .35s}
+  @keyframes abre{from{opacity:0;transform:translateY(-8px)}to{opacity:1}}
+  .corpo p{margin:9px 0}
+  .corpo .destaque{color:var(--azul-esc);font-weight:bold}
+  .caixa-conceitos{background:#fff7df;border:2px dashed var(--sol);border-radius:14px;
+    padding:12px 14px;margin:14px 0}
+  .caixa-conceitos h3{color:var(--coral);font-size:1rem;margin-bottom:6px}
+  .caixa-conceitos ul{list-style:none}
+  .caixa-conceitos li{margin:6px 0;padding-left:22px;position:relative}
+  .caixa-conceitos li::before{content:"🔑";position:absolute;left:0}
+  .caixa-conceitos b{color:var(--verde-esc)}
+  /* PERGUNTAS */
+  .perg{background:#eef6ff;border-radius:14px;padding:12px 14px;margin:12px 0}
+  .perg .q{font-weight:bold;margin-bottom:8px}
+  .opcao{display:block;width:100%;text-align:left;background:#fff;border:2px solid #cfe0f2;
+    border-radius:10px;padding:9px 12px;margin:6px 0;cursor:pointer;font-size:.98rem;font-family:inherit}
+  .opcao:hover{border-color:var(--azul)}
+  .opcao.certa{background:#d7f5e1;border-color:var(--verde);font-weight:bold}
+  .opcao.errada{background:#ffdad4;border-color:var(--coral)}
+  .opcao:disabled{cursor:default}
+  .feedback{margin-top:8px;font-weight:bold;display:none}
+  .feedback.ok{color:var(--verde-esc)}
+  .feedback.nao{color:var(--coral)}
+  .btn-conf{background:var(--verde);color:#fff;border:none;border-radius:22px;
+    padding:11px 22px;font-size:1rem;font-weight:bold;cursor:pointer;font-family:inherit;margin-top:8px}
+  .btn-conf:hover{background:var(--verde-esc)}
+  .btn-conf:disabled{background:#bbb;cursor:default}
+  .selo-ok{display:none;margin-top:10px;background:#d7f5e1;border-radius:12px;padding:10px;
+    text-align:center;font-weight:bold;color:var(--verde-esc)}
+  /* PEGADINHAS + COBERTURA */
+  .peg{background:#fff3cd;border:3px solid var(--sol);border-radius:18px;padding:16px 18px;margin:22px 0}
+  .peg h2{color:var(--coral);margin-bottom:8px}
+  .peg ol{margin-left:20px}
+  .peg li{margin:7px 0}
+  table.cob{width:100%;border-collapse:collapse;margin-top:10px;background:#fff;border-radius:12px;overflow:hidden}
+  table.cob th,table.cob td{border:1px solid #d9e4c9;padding:8px;text-align:left;font-size:.9rem}
+  table.cob th{background:var(--verde);color:#fff}
+  .rodape-nav{text-align:center;margin:26px 0}
+  .rodape-nav a{display:inline-block;background:var(--azul);color:#fff;text-decoration:none;
+    font-weight:bold;padding:13px 26px;border-radius:26px;box-shadow:0 4px 10px rgba(0,0,0,.2)}
+  .rodape-nav a:hover{background:var(--azul-esc)}
+  .fim-festa{text-align:center;font-size:1.1rem;margin:20px 0;color:var(--verde-esc);font-weight:bold;display:none}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html">🏠 Início</a>
+  <a href="mapa_mental.html">🧠 Mapa Mental</a>
+  <a href="leitura_guiada.html" class="atual">📖 Leitura Guiada</a>
+  <a href="resumo.html">🗺️ Resumo</a>
+  <a href="jogo_vf.html">✅ Verdadeiro ou Falso</a>
+  <a href="simulado.html">📝 Simulado</a>
+</nav>
+
+<header class="hero">
+  <span class="mascote">🧭🦜</span>
+  <span class="selo">EXPEDIÇÃO PLANETA AZUL • 3º ANO • GEOGRAFIA</span>
+  <h1>📖 Leitura Guiada</h1>
+  <p>Olá, jovem explorador(a)! Vamos atravessar duas trilhas: a <b>Trilha dos Resíduos</b> ♻️
+  e a <b>Trilha da Água</b> 💧. Leia cada parada, descubra as palavras-chave e responda às
+  3 perguntas para liberar a próxima. Bora salvar o planeta? 🌍</p>
+</header>
+
+<div class="painel">
+  <span>Progresso da expedição:</span>
+  <div class="barra"><div id="fill"></div></div>
+  <span class="placar" id="placar">0/9 paradas</span>
+  <span class="estrelas" id="estrelas"></span>
+</div>
+
+<main id="main"></main>
+
+<div class="fim-festa" id="festa">🏆 PARABÉNS! Você concluiu toda a Leitura Guiada da Expedição Planeta Azul! 🎉<br>
+Agora siga para o Resumo para revisar tudo rapidinho. 👇</div>
+
+<div class="rodape-nav">
+  <a href="resumo.html">Ir para o Resumo 🗺️ →</a>
+</div>
+
+<script>
+/* ====== CONTEÚDO (extraído do livro Phases Geografia 3 – Livro 2, Cap. 9 e 10) ====== */
+const CORES = ['#2fa66a','#1b74c4','#7a5230','#ef6f53','#8e44ad','#0f9b9b','#c0392b','#e67e22','#16a085'];
+const BLOCOS = [
+{
+  emo:'🗑️', titulo:'Parada 1 — Lixo NÃO é a mesma coisa que resíduo',
+  texto:`<p>Tudo o que a gente consome gera algum <b>descarte</b> (coisas que jogamos fora).
+  Mas atenção: <span class="destaque">lixo e resíduo são coisas diferentes!</span></p>
+  <p>🔴 <b>Lixo</b> é o material que <b>não</b> pode ser reaproveitado. Ele só é jogado fora mesmo.</p>
+  <p>🟢 <b>Resíduo</b> é o material descartado que <b>pode</b> ser reciclado ou reaproveitado.
+  Ele vira uma nova <b>matéria-prima</b> para fabricar outros produtos!</p>
+  <p>Quando a gente trata tudo como "lixo", esse material perde o valor que ainda tinha.
+  Os profissionais da coleta de recicláveis fazem um trabalho super importante separando
+  o que ainda pode ser aproveitado. 👏</p>`,
+  palavras:[
+    ['Lixo','material que NÃO pode ser reaproveitado; é jogado fora.'],
+    ['Resíduo','material descartado que PODE ser reciclado ou reaproveitado.'],
+    ['Matéria-prima','material usado para fabricar um produto novo.']
+  ],
+  perg:[
+    {q:'Qual é a diferença entre lixo e resíduo?',
+     o:['Lixo pode ser reaproveitado e resíduo não',
+        'Lixo não pode ser reaproveitado; resíduo pode ser reciclado ou reaproveitado',
+        'São exatamente a mesma coisa',
+        'Resíduo é só o que apodrece'],
+     c:1, e:'Isso! Lixo não dá para reaproveitar; resíduo pode virar matéria-prima nova.'},
+    {q:'Uma garrafa que pode ser reciclada e virar outro produto é chamada de:',
+     o:['Lixo','Resíduo','Poluição','Aterro'],
+     c:1, e:'Ela é um resíduo, porque ainda pode ser reaproveitada.'},
+    {q:'Por que os profissionais que separam recicláveis são importantes?',
+     o:['Porque jogam tudo fora mais rápido',
+        'Porque salvam material que ainda pode ser reaproveitado',
+        'Porque queimam os resíduos',
+        'Porque só cuidam do lixo orgânico'],
+     c:1, e:'Exato! Eles evitam que material bom seja tratado como lixo.'}
+  ]
+},
+{
+  emo:'♻️', titulo:'Parada 2 — Tipos de resíduo e coleta seletiva',
+  texto:`<p>Existem <b>dois tipos</b> de resíduo:</p>
+  <p>🍎 <b>Orgânicos:</b> restos de alimentos, poda de árvores e grama.</p>
+  <p>📄 <b>Recicláveis:</b> os mais comuns são <b>papel, plástico, metal e vidro</b>.
+  Separados corretamente, viram matéria-prima de novos produtos (como caderno de papel reciclado).</p>
+  <p>Separar o resíduo por tipo de material se chama <span class="destaque">coleta seletiva</span>.
+  Depois, ele passa pela <b>triagem</b> (separação) nos centros de triagem e vai para as empresas
+  que fazem a reciclagem. Quem recolhe é a prefeitura.</p>
+  <p>🟧 Cuidado especial: <b>pilhas e baterias</b> são <b>resíduos perigosos</b> (têm produtos
+  tóxicos). Elas NÃO vão no lixo comum nem no reciclável — vão para pontos de coleta, na
+  <b>lixeira laranja</b>.</p>
+  <p>💡 Fato incrível: <b>1 tonelada de papel reciclado</b> evita cortar quase <b>20 árvores</b>
+  e economiza <b>10 mil litros de água</b>! 🌳💧</p>`,
+  palavras:[
+    ['Resíduo orgânico','restos de comida, poda de árvore e grama.'],
+    ['Resíduo reciclável','papel, plástico, metal e vidro.'],
+    ['Coleta seletiva','separar o resíduo por tipo de material.'],
+    ['Triagem','separar os objetos por características (tipo de material).'],
+    ['Lixeira laranja','recolhe pilhas e baterias (resíduos perigosos).']
+  ],
+  perg:[
+    {q:'Restos de comida e grama cortada são resíduos:',
+     o:['Recicláveis','Orgânicos','Perigosos','Metálicos'],
+     c:1, e:'Isso! Restos de alimento e poda são resíduos orgânicos.'},
+    {q:'Onde devem ser descartadas as pilhas e baterias?',
+     o:['No lixo comum','Junto com o papel reciclável','Em pontos de coleta, na lixeira laranja','No aterro sanitário comum'],
+     c:2, e:'Certo! Pilhas e baterias são perigosas e vão na lixeira laranja.'},
+    {q:'Separar o resíduo por tipo de material (papel, plástico, vidro, metal) é chamado de:',
+     o:['Coleta seletiva','Poluição','Desperdício','Irrigação'],
+     c:0, e:'Exato! Isso é coleta seletiva.'}
+  ]
+},
+{
+  emo:'🏞️', titulo:'Parada 3 — Para onde vai: lixão ou aterro sanitário?',
+  texto:`<p>Antigamente, os resíduos das casas eram jogados em <b>lixões</b>.</p>
+  <p>🚫 No <b>lixão</b>, os resíduos ficam a <b>céu aberto</b> e apodrecem, soltando <b>gases</b>
+  e <b>líquidos tóxicos</b> (o chorume) que contaminam o <b>solo</b> e as <b>águas</b>.
+  Por isso, as <span class="destaque">leis do Brasil não permitem mais os lixões</span> (mas
+  alguns ainda existem).</p>
+  <p>✅ No lugar deles surgiram os <b>aterros sanitários</b>. Eles têm uma <b>camada
+  impermeabilizante</b> (que não deixa o líquido tóxico vazar) e uma camada de terra e
+  vegetação por cima. Poluem <b>bem menos</b> que o lixão.</p>
+  <p>Mesmo assim, o aterro ainda causa alguns impactos: pode vazar um pouco de líquido e
+  a decomposição gera gases. Por isso o melhor é sempre <b>reduzir</b> os resíduos!</p>`,
+  palavras:[
+    ['Lixão','resíduos a céu aberto; proibido por lei; polui muito.'],
+    ['Aterro sanitário','tem camada impermeável; polui menos que o lixão.'],
+    ['Chorume','líquido tóxico que sai dos resíduos apodrecendo.']
+  ],
+  perg:[
+    {q:'Qual é a principal diferença do aterro sanitário para o lixão?',
+     o:['O aterro fica a céu aberto',
+        'O aterro tem camada impermeável e polui menos',
+        'O aterro é proibido por lei',
+        'No aterro os resíduos apodrecem sem proteção'],
+     c:1, e:'Isso! O aterro tem proteção impermeável e polui menos.'},
+    {q:'O que a lei brasileira diz sobre os lixões?',
+     o:['Que são obrigatórios','Que não são mais permitidos','Que são melhores que aterros','Que só podem ter pilhas'],
+     c:1, e:'Certo! Os lixões não são mais permitidos.'},
+    {q:'No lixão, o que contamina o solo e as águas?',
+     o:['A camada impermeável','A terra por cima','Os gases e líquidos tóxicos dos resíduos apodrecendo','As lixeiras coloridas'],
+     c:2, e:'Exato! Gases e líquidos tóxicos contaminam solo e água.'}
+  ]
+},
+{
+  emo:'🌫️', titulo:'Parada 4 — Descarte errado gera poluição',
+  texto:`<p>Quando os resíduos são descartados de forma errada, aparece a <b>poluição</b>.</p>
+  <p><span class="destaque">Poluição é toda mudança prejudicial à natureza e aos seres vivos.</span>
+  As atividades humanas são as principais responsáveis por ela.</p>
+  <p>São <b>três tipos</b> de poluição:</p>
+  <p>💨 <b>Do ar:</b> quando os resíduos são queimados ou apodrecem, soltando gases nocivos.</p>
+  <p>💧 <b>Da água:</b> quando resíduos ou líquidos tóxicos caem em rios, lagos, oceanos e
+  aquíferos (a água que fica debaixo da terra).</p>
+  <p>🟤 <b>Do solo:</b> quando os resíduos se acumulam e contaminam a terra, prejudicando as plantas.</p>
+  <p>⚠️ A poluição do solo pode virar poluição da água: o líquido tóxico se infiltra e chega ao
+  aquífero. Água contaminada causa <b>doenças</b> — mesmo parecendo limpa! Por isso é bom
+  <b>ferver</b> e <b>filtrar</b> a água.</p>
+  <p>🌧️ Quando chove forte, os resíduos jogados na rua <b>entopem os bueiros</b> e causam
+  <b>alagamentos</b>. Nos rios, formam barreiras que atrapalham a passagem da água.</p>
+  <p>🎉 Boa notícia — <b>despoluição</b>: áreas poluídas podem ser recuperadas! O <b>rio Jundiaí</b>
+  (SP) foi o <b>primeiro rio do Brasil a ser despoluído</b>.</p>`,
+  palavras:[
+    ['Poluição','mudança prejudicial à natureza e aos seres vivos.'],
+    ['Aquífero','água guardada debaixo da terra (subterrânea).'],
+    ['Alagamento','quando a água não escoa, muitas vezes por bueiro entupido.'],
+    ['Despoluição','recuperar um lugar que estava poluído.']
+  ],
+  perg:[
+    {q:'O que é poluição?',
+     o:['Separar o lixo por cores',
+        'Toda mudança prejudicial à natureza e aos seres vivos',
+        'Guardar água da chuva',
+        'Reaproveitar garrafas'],
+     c:1, e:'Isso! Poluição é mudança prejudicial à natureza e aos seres vivos.'},
+    {q:'Por que jogar resíduo na rua pode causar alagamento na chuva?',
+     o:['Porque limpa os bueiros','Porque entope os bueiros e a água não escoa','Porque a água evapora','Porque vira aterro'],
+     c:1, e:'Certo! Resíduo entope o bueiro e a água não consegue escoar.'},
+    {q:'O rio Jundiaí ficou famoso porque foi:',
+     o:['O rio mais poluído do mundo','O primeiro rio do Brasil a ser despoluído','Um aterro sanitário','Uma cisterna gigante'],
+     c:1, e:'Exato! Foi o primeiro rio do Brasil a ser despoluído.'}
+  ]
+},
+{
+  emo:'3️⃣', titulo:'Parada 5 — Os 3 R’s: Reduzir, Reutilizar, Reciclar',
+  texto:`<p>Para cuidar do planeta, existe o princípio dos <span class="destaque">3 R’s</span>.
+  São três ações que todos nós podemos fazer no dia a dia para diminuir o desperdício:</p>
+  <p>🔽 <b>Reduzir:</b> consumir menos e evitar o desperdício (ex.: não pegar sacola demais).</p>
+  <p>🔁 <b>Reutilizar:</b> usar de novo o que já temos, dando um novo uso (ex.: pote de sorvete
+  vira porta-lápis; garrafa PET vira vaso).</p>
+  <p>♻️ <b>Reciclar:</b> transformar o resíduo em nova matéria-prima para fazer outro produto
+  (ex.: papel usado vira papel novo).</p>
+  <p>Fazer os 3 R’s ajuda a reduzir a poluição e o impacto das pessoas sobre a natureza. 🌍💚</p>`,
+  palavras:[
+    ['Reduzir','consumir menos, evitar o desperdício.'],
+    ['Reutilizar','usar de novo, dar um novo uso ao objeto.'],
+    ['Reciclar','transformar o resíduo em nova matéria-prima.']
+  ],
+  perg:[
+    {q:'Transformar papel usado em papel novo é um exemplo de:',
+     o:['Reduzir','Reutilizar','Reciclar','Poluir'],
+     c:2, e:'Isso! Transformar em matéria-prima nova é reciclar.'},
+    {q:'Usar um pote de sorvete vazio como porta-lápis é:',
+     o:['Reduzir','Reutilizar','Reciclar','Descartar'],
+     c:1, e:'Certo! Dar um novo uso ao objeto é reutilizar.'},
+    {q:'Qual atitude é um exemplo de REDUZIR?',
+     o:['Comprar e desperdiçar menos','Jogar tudo no lixão','Queimar resíduos','Usar mais sacolas plásticas'],
+     c:0, e:'Exato! Reduzir é consumir e desperdiçar menos.'}
+  ]
+},
+{
+  emo:'💧', titulo:'Parada 6 — A água no Brasil',
+  texto:`<p>Agora entramos na <b>Trilha da Água</b> 💧! A água é <b>essencial para a vida</b> e
+  deve ser usada de forma <b>consciente</b>, sem desperdício.</p>
+  <p>O Brasil é enorme, então a quantidade de água <b>muda de uma região para outra</b>:</p>
+  <p>🌳 No <b>Amazonas</b> e no <b>Pará</b> há <b>muitos rios</b> e chove bastante. Os rios servem
+  para se locomover, para o lazer e para conseguir alimento. As pessoas que moram nas margens
+  dos rios são os <b>ribeirinhos</b>, e vivem em casas chamadas <b>palafitas</b> (casas sobre
+  estacas de madeira, acima da água).</p>
+  <p>🌵 Já no <b>Piauí</b> e no interior da <b>Bahia</b> chove menos e há <b>menos rios</b>. A seca
+  dura mais, por isso as pessoas guardam a água da chuva em <b>cisternas</b> (parecem uma grande
+  caixa-d’água).</p>`,
+  palavras:[
+    ['Ribeirinhos','pessoas que moram nas margens dos rios.'],
+    ['Palafita','casa sobre estacas de madeira, acima da água.'],
+    ['Cisterna','reservatório que guarda a água da chuva.']
+  ],
+  perg:[
+    {q:'Como é a casa dos ribeirinhos, construída acima da água sobre estacas?',
+     o:['Cisterna','Palafita','Aterro','Barragem'],
+     c:1, e:'Isso! A casa sobre estacas é a palafita.'},
+    {q:'Em lugares com pouca chuva, como o interior da Bahia, as pessoas guardam água da chuva em:',
+     o:['Rios','Cisternas','Palafitas','Bueiros'],
+     c:1, e:'Certo! Guardam a água da chuva em cisternas.'},
+    {q:'Por que a quantidade de água muda entre as regiões do Brasil?',
+     o:['Porque o Brasil é pequeno','Porque algumas regiões têm mais chuva e outras menos','Porque só existe água no Sul','Porque a água some no verão'],
+     c:1, e:'Exato! Umas regiões têm mais chuva e mais rios; outras, menos.'}
+  ]
+},
+{
+  emo:'🚰', titulo:'Parada 7 — Direito à água e desperdício',
+  texto:`<p>A <b>água potável</b> é aquela <b>segura para o consumo humano</b> (que a gente pode beber).</p>
+  <p>Infelizmente, muita gente não tem água em casa e precisa andar longe para buscar. No mundo
+  todo, <b>3 em cada 10 pessoas</b> não têm água potável na moradia. 😢</p>
+  <p>No Brasil, a <b>Constituição Federal</b> é a lei mais importante. Em <b>2023</b>, o acesso à
+  água virou um <span class="destaque">direito fundamental</span> de todo cidadão — ou seja, é
+  algo indispensável para uma vida digna, que o governo deve garantir.</p>
+  <p>💦 O <b>desperdício</b> de água causa:</p>
+  <p>🌿 <b>Problemas ambientais:</b> menos água nos reservatórios (rios e lagos), afetando plantas
+  e animais.</p>
+  <p>👥 <b>Problemas sociais:</b> menos água potável para as pessoas e para atividades como a
+  agropecuária.</p>
+  <p>Atitudes simples ajudam: escovar os dentes com a <b>torneira fechada</b> e <b>reutilizar</b>
+  a água sempre que der. 🪥💧</p>`,
+  palavras:[
+    ['Água potável','água segura para beber (consumo humano).'],
+    ['Direito fundamental','direito indispensável para uma vida digna.'],
+    ['Desperdício','usar mais do que precisa e jogar água fora à toa.']
+  ],
+  perg:[
+    {q:'O que é água potável?',
+     o:['Água suja','Água segura para o consumo humano','Água só para lavar o chão','Água do lixão'],
+     c:1, e:'Isso! Água potável é a água segura para beber.'},
+    {q:'O que aconteceu no Brasil em 2023 sobre a água?',
+     o:['A água ficou proibida','O acesso à água virou um direito fundamental','Todos os rios foram poluídos','Acabaram as cisternas'],
+     c:1, e:'Certo! Em 2023 o acesso à água virou direito fundamental.'},
+    {q:'Qual atitude ajuda a evitar o desperdício de água?',
+     o:['Deixar a torneira aberta ao escovar os dentes','Escovar os dentes com a torneira fechada','Lavar a calçada com mangueira todo dia','Tomar banhos bem longos'],
+     c:1, e:'Exato! Torneira fechada ao escovar economiza muita água.'}
+  ]
+},
+{
+  emo:'⚡', titulo:'Parada 8 — Para que a água é importante',
+  texto:`<p>A água é usada em várias atividades importantes:</p>
+  <p>🐄 <b>Agropecuária:</b> as plantas precisam de água para absorver nutrientes e crescer; os
+  animais precisam para se hidratar. Dar água às plantas de forma artificial é a <b>irrigação</b>.
+  Há dois tipos: <b>manual</b> (mangueira ou regador, usada em estufas e fazendas menores) e
+  <b>mecanizada</b> (máquinas nas grandes fazendas, que regam muitas plantas ao mesmo tempo).</p>
+  <p>🏭 <b>Indústria:</b> as fábricas usam água na <b>produção</b>, no <b>resfriamento das máquinas</b>
+  e na <b>limpeza</b>. Fábricas de alimentos e de papel gastam muita água.</p>
+  <p>⚡ <b>Energia elétrica:</b> no Brasil, a principal forma de gerar energia é a <b>usina
+  hidrelétrica</b>, que usa a <b>força das águas</b>. É uma energia <b>limpa</b> (não polui
+  diretamente), mas causa impactos: uma grande área é <b>inundada</b> para o reservatório, e
+  famílias precisam se mudar. A água passa pela <b>barragem</b>, gira a <b>turbina</b>, aciona o
+  <b>gerador</b> e a energia vai pelas <b>linhas de transmissão</b>.</p>
+  <p>🐟 Curiosidade — <b>piracema</b>: alguns peixes nadam contra a correnteza para botar ovos
+  perto das nascentes. As hidrelétricas atrapalham isso, então há leis que exigem canais para
+  os peixes subirem o rio.</p>`,
+  palavras:[
+    ['Irrigação','fornecer água às plantas de forma artificial.'],
+    ['Usina hidrelétrica','usa a força da água para gerar energia elétrica.'],
+    ['Barragem','parede que segura a água no reservatório da usina.'],
+    ['Piracema','peixes nadando contra a correnteza para se reproduzir.']
+  ],
+  perg:[
+    {q:'No Brasil, a principal forma de gerar energia elétrica é:',
+     o:['A queima de lixo','A usina hidrelétrica, com a força da água','As cisternas','Os aterros sanitários'],
+     c:1, e:'Isso! A energia vem principalmente das usinas hidrelétricas.'},
+    {q:'Regar as plantas com máquinas nas grandes fazendas, regando muitas ao mesmo tempo, é irrigação:',
+     o:['Manual','Mecanizada','Natural','Proibida'],
+     c:1, e:'Certo! Máquina em grande fazenda é irrigação mecanizada.'},
+    {q:'Em quais etapas a indústria usa água?',
+     o:['Só para beber','Produção, resfriamento das máquinas e limpeza','Só para gerar energia','Só na agropecuária'],
+     c:1, e:'Exato! Produção, resfriamento e limpeza.'}
+  ]
+},
+{
+  emo:'🏆', titulo:'Parada Final — Revisão da Expedição (mistura tudo!)',
+  texto:`<p>Chegamos ao fim da expedição! Vamos misturar tudo o que você aprendeu nas duas
+  trilhas: resíduos ♻️ e água 💧. Responda com atenção, explorador(a)! 🧭</p>`,
+  palavras:[
+    ['Lembre-se','resíduo vira matéria-prima; água é para usar sem desperdício.']
+  ],
+  perg:[
+    {q:'Ligue as ideias certas: o que faz a coleta seletiva funcionar?',
+     o:['Misturar todos os resíduos','Separar os resíduos por tipo de material','Jogar tudo no rio','Queimar o papel'],
+     c:1, e:'Isso! Coleta seletiva é separar por tipo de material.'},
+    {q:'Qual dupla está correta?',
+     o:['Lixão = permitido por lei / Aterro = proibido',
+        'Lixão = polui muito e é proibido / Aterro = polui menos e é permitido',
+        'Lixão e aterro são iguais',
+        'Aterro fica a céu aberto sem proteção'],
+     c:1, e:'Certo! Lixão polui muito (proibido); aterro polui menos.'},
+    {q:'Sobre a água, qual frase é verdadeira?',
+     o:['Água potável é a água suja do rio',
+        'A energia hidrelétrica usa a força da água e é considerada limpa',
+        'Desperdiçar água não causa nenhum problema',
+        'Cisterna serve para guardar lixo'],
+     c:1, e:'Exato! A hidrelétrica usa a força da água e é energia limpa.'}
+  ]
+}
+];
+
+/* ====== PEGADINHAS + COBERTURA ====== */
+const PEGADINHAS = [
+  'Lixo e resíduo NÃO são a mesma coisa: resíduo pode ser reaproveitado; lixo, não.',
+  'Pilhas e baterias NÃO vão no lixo comum nem no reciclável — vão na lixeira laranja.',
+  'O lixão é PROIBIDO por lei; o aterro sanitário é o certo (mas o melhor é reduzir).',
+  'O aterro sanitário também polui um pouco — só que MENOS que o lixão.',
+  'Poluição é mudança prejudicial à natureza; as atividades humanas são as principais causadoras.',
+  'Água pode parecer limpa e estar contaminada — por isso ferver e filtrar é importante.',
+  'Bueiro entupido por resíduo causa ALAGAMENTO quando chove forte.',
+  'Água potável é a que dá para BEBER; nem toda água é potável.',
+  'A energia hidrelétrica é limpa, mas INUNDA áreas e desloca famílias (tem impactos).',
+  'Irrigação manual = mangueira/regador (fazenda pequena); mecanizada = máquina (fazenda grande).'
+];
+const COBERTURA = [
+  ['Lixo x resíduo','Parada 1'],
+  ['Tipos de resíduo e coleta seletiva','Parada 2'],
+  ['Lixões e aterros sanitários','Parada 3'],
+  ['Poluição (ar, água, solo) e despoluição','Parada 4'],
+  ['Os 3 R’s','Parada 5'],
+  ['A água no Brasil (palafitas e cisternas)','Parada 6'],
+  ['Direito à água e desperdício','Parada 7'],
+  ['Usos da água: agropecuária, indústria e energia','Parada 8'],
+  ['Revisão geral','Parada Final']
+];
+
+/* ====== ESTADO / SALVAMENTO ====== */
+const KEY='geo3_leitura';
+let estado = carregar();
+function carregar(){ try{ return JSON.parse(localStorage.getItem(KEY))||{} }catch(e){ return {} } }
+function salvar(){ try{ localStorage.setItem(KEY, JSON.stringify(estado)) }catch(e){} }
+
+/* ====== RENDER ====== */
+const main=document.getElementById('main');
+BLOCOS.forEach((b,i)=>{
+  const cor=CORES[i%CORES.length];
+  const div=document.createElement('section');
+  div.className='bloco'+(i===0?' aberto':' travado');
+  div.style.setProperty('--cor',cor);
+  div.id='bloco'+i;
+  let perguntasHTML='';
+  b.perg.forEach((p,j)=>{
+    let opsHTML='';
+    p.o.forEach((op,k)=>{ opsHTML+=`<button class="opcao" data-b="${i}" data-p="${j}" data-k="${k}">${'ABCD'[k]}) ${op}</button>`; });
+    perguntasHTML+=`<div class="perg" id="perg-${i}-${j}">
+      <div class="q">${j+1}) ${p.q}</div>${opsHTML}
+      <div class="feedback" id="fb-${i}-${j}"></div></div>`;
+  });
+  let conceitosHTML=b.palavras.map(w=>`<li><b>${w[0]}:</b> ${w[1]}</li>`).join('');
+  div.innerHTML=`
+    <div class="cab" data-toggle="${i}">
+      <span class="emo">${b.emo}</span><h2>${b.titulo}</h2><span class="seta">▶</span>
+    </div>
+    <div class="corpo">
+      ${b.texto}
+      <div class="caixa-conceitos"><h3>🔑 Palavras importantes</h3><ul>${conceitosHTML}</ul></div>
+      <h3 style="color:${cor};margin:10px 0 4px">✏️ Responda para liberar a próxima parada:</h3>
+      ${perguntasHTML}
+      <button class="btn-conf" id="conf-${i}" data-conf="${i}">Conferir respostas ✅</button>
+      <div class="selo-ok" id="ok-${i}">🌟 Parada concluída! Próxima trilha liberada! 🌟</div>
+    </div>`;
+  main.appendChild(div);
+});
+
+/* pegadinhas + cobertura */
+const peg=document.createElement('div');
+peg.className='peg';
+peg.innerHTML=`<h2>⚠️ 10 Pegadinhas da prova (não caia nelas!)</h2>
+  <ol>${PEGADINHAS.map(p=>`<li>${p}</li>`).join('')}</ol>
+  <h2 style="margin-top:16px">✅ Tudo o que você estudou</h2>
+  <table class="cob"><tr><th>Tópico</th><th>Onde está</th></tr>
+  ${COBERTURA.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table>`;
+main.appendChild(peg);
+
+/* ====== INTERAÇÕES ====== */
+let escolhas={}; // escolhas[b][p]=k
+main.addEventListener('click',e=>{
+  const cab=e.target.closest('.cab');
+  if(cab){ const i=+cab.dataset.toggle; const bl=document.getElementById('bloco'+i);
+    if(bl.classList.contains('travado')) return; bl.classList.toggle('aberto'); return; }
+  const op=e.target.closest('.opcao');
+  if(op){ const b=+op.dataset.b,p=+op.dataset.p,k=+op.dataset.k;
+    if(document.getElementById('conf-'+b).disabled) return;
+    document.querySelectorAll(`.opcao[data-b="${b}"][data-p="${p}"]`).forEach(o=>o.style.outline='');
+    op.style.outline='3px solid #1b74c4'; escolhas[b]=escolhas[b]||{}; escolhas[b][p]=k; return; }
+  const cf=e.target.closest('.btn-conf');
+  if(cf){ conferir(+cf.dataset.conf); }
+});
+
+function conferir(i){
+  const b=BLOCOS[i];
+  if(!escolhas[i] || Object.keys(escolhas[i]).length<b.perg.length){
+    const btn=document.getElementById('conf-'+i);
+    btn.textContent='Responda as 3 perguntas primeiro 🙂';
+    setTimeout(()=>btn.textContent='Conferir respostas ✅',1600); return;
+  }
+  let acertos=0;
+  b.perg.forEach((p,j)=>{
+    const escolha=escolhas[i][j];
+    document.querySelectorAll(`.opcao[data-b="${i}"][data-p="${j}"]`).forEach((o,k)=>{
+      o.disabled=true; o.style.outline='';
+      if(k===p.c) o.classList.add('certa');
+      else if(k===escolha) o.classList.add('errada');
+    });
+    const fb=document.getElementById('fb-'+i+'-'+j);
+    if(escolha===p.c){ acertos++; fb.className='feedback ok'; fb.textContent='✔ '+p.e; }
+    else { fb.className='feedback nao'; fb.textContent='✖ Quase! '+p.e; }
+    fb.style.display='block';
+  });
+  document.getElementById('conf-'+i).disabled=true;
+  document.getElementById('ok-'+i).style.display='block';
+  estado['b'+i]={acertos:acertos, feito:true};
+  salvar();
+  // libera próximo
+  const prox=document.getElementById('bloco'+(i+1));
+  if(prox){ prox.classList.remove('travado'); prox.classList.add('aberto');
+    setTimeout(()=>prox.scrollIntoView({behavior:'smooth',block:'start'}),400); }
+  atualizarProgresso();
+}
+
+function atualizarProgresso(){
+  let feitos=0, estrelas=0;
+  BLOCOS.forEach((b,i)=>{ if(estado['b'+i] && estado['b'+i].feito){ feitos++; estrelas+=estado['b'+i].acertos; } });
+  const pct=Math.round(feitos/BLOCOS.length*100);
+  document.getElementById('fill').style.width=pct+'%';
+  document.getElementById('placar').textContent=feitos+'/'+BLOCOS.length+' paradas';
+  document.getElementById('estrelas').textContent=(estrelas>0?'⭐×'+estrelas:'');
+  if(feitos===BLOCOS.length){ document.getElementById('festa').style.display='block'; }
+}
+
+/* restaurar progresso salvo */
+(function restaurar(){
+  let ultimoFeito=-1;
+  BLOCOS.forEach((b,i)=>{ if(estado['b'+i] && estado['b'+i].feito) ultimoFeito=i; });
+  for(let i=0;i<=ultimoFeito+1 && i<BLOCOS.length;i++){
+    const bl=document.getElementById('bloco'+i); if(bl) bl.classList.remove('travado');
+  }
+  atualizarProgresso();
+})();
+</script>
+</body>
+</html>
