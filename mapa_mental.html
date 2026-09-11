@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa Mental 🧠 — Expedição Planeta Azul</title>
+<style>
+  :root{
+    --azul:#1b74c4; --azul-esc:#0d4d86; --verde:#2fa66a; --verde-esc:#1e7d4d;
+    --areia:#f6ecd2; --sol:#ffb703; --coral:#ef6f53; --txt:#2a2a2a; --branco:#fffdf7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Comic Sans MS','Segoe UI',sans-serif;color:var(--txt);
+    background:linear-gradient(180deg,#bfe6ff 0%,#dff3e6 40%,var(--areia) 100%);
+    background-attachment:fixed;line-height:1.5;padding-bottom:60px}
+  .nav{position:sticky;top:0;z-index:50;background:var(--azul-esc);
+    display:flex;flex-wrap:wrap;gap:4px;justify-content:center;padding:8px;box-shadow:0 3px 10px rgba(0,0,0,.25)}
+  .nav a{color:#fff;text-decoration:none;font-weight:bold;font-size:.85rem;padding:7px 11px;border-radius:20px;background:rgba(255,255,255,.12)}
+  .nav a:hover,.nav a.atual{background:var(--sol);color:#333}
+  header.hero{text-align:center;padding:22px 16px 6px}
+  header.hero .selo{font-size:.9rem;color:var(--verde-esc);font-weight:bold;letter-spacing:1px}
+  header.hero h1{font-size:2rem;color:var(--azul-esc);margin:6px 0;text-shadow:1px 1px 0 #fff}
+  header.hero p{max-width:640px;margin:6px auto}
+  .mascote{font-size:3rem}
+  main{max-width:940px;margin:0 auto;padding:0 14px}
+  /* CARD CENTRAL */
+  .central{background:linear-gradient(135deg,var(--azul-esc),var(--verde-esc));color:#fff;border-radius:20px;
+    padding:20px;margin:16px 0;text-align:center;box-shadow:0 8px 20px rgba(0,0,0,.2)}
+  .central h2{font-size:1.4rem;margin-bottom:12px}
+  .tl{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+  .tl .marco{background:rgba(255,255,255,.15);border-radius:12px;padding:10px 12px;width:150px;font-size:.9rem}
+  .tl .marco .e{font-size:1.6rem;display:block}
+  /* GRADE CARDS */
+  .grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;margin:16px 0}
+  .cardm{background:var(--branco);border-radius:18px;padding:16px;box-shadow:0 6px 16px rgba(0,0,0,.12);
+    border-top:8px solid var(--cor,#ccc);display:flex;flex-direction:column}
+  .cardm h3{color:var(--cor,#333);font-size:1.15rem;display:flex;align-items:center;gap:8px}
+  .cardm .emoji{font-size:1.6rem}
+  .cardm .resumo{margin:8px 0}
+  .cardm .mais{display:none;background:#f3f8ff;border-radius:10px;padding:10px;margin:6px 0;font-size:.95rem}
+  .cardm.aberto .mais{display:block;animation:fade .3s}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .btn-mais{background:var(--cor,#888);color:#fff;border:none;border-radius:20px;padding:8px 16px;
+    font-weight:bold;cursor:pointer;font-family:inherit;align-self:flex-start;margin-top:auto}
+  /* MINI QUIZ */
+  .mini{background:#fff7df;border:2px dashed var(--sol);border-radius:12px;padding:10px;margin-top:10px}
+  .mini .mq{font-weight:bold;margin-bottom:6px;font-size:.95rem}
+  .mini button{display:block;width:100%;text-align:left;background:#fff;border:2px solid #e0d5b0;border-radius:8px;
+    padding:7px 10px;margin:4px 0;cursor:pointer;font-family:inherit;font-size:.9rem}
+  .mini button.certa{background:#d7f5e1;border-color:var(--verde)}
+  .mini button.errada{background:#ffdad4;border-color:var(--coral)}
+  .mini .fb{font-weight:bold;margin-top:6px;display:none}
+  /* RESUMÃO */
+  .resumao{background:var(--sol);border-radius:18px;padding:18px;margin:20px 0;box-shadow:0 6px 16px rgba(0,0,0,.15)}
+  .resumao h2{color:#7a4a00;text-align:center;margin-bottom:10px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+  .chip{background:#fff;border-radius:18px;padding:7px 14px;font-weight:bold;font-size:.9rem;color:var(--azul-esc);box-shadow:0 2px 5px rgba(0,0,0,.1)}
+  .trilha{text-align:center;margin:24px 0}
+  .trilha a{display:inline-block;background:var(--azul);color:#fff;text-decoration:none;font-weight:bold;
+    padding:13px 26px;border-radius:26px;box-shadow:0 4px 10px rgba(0,0,0,.2)}
+  .trilha a:hover{background:var(--azul-esc)}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html">🏠 Início</a>
+  <a href="mapa_mental.html" class="atual">🧠 Mapa Mental</a>
+  <a href="leitura_guiada.html">📖 Leitura Guiada</a>
+  <a href="resumo.html">🗺️ Resumo</a>
+  <a href="jogo_vf.html">✅ Verdadeiro ou Falso</a>
+  <a href="simulado.html">📝 Simulado</a>
+</nav>
+
+<header class="hero">
+  <span class="mascote">🧠🌍</span><br>
+  <span class="selo">EXPEDIÇÃO PLANETA AZUL • 3º ANO • GEOGRAFIA</span>
+  <h1>🧠 Mapa Mental</h1>
+  <p>A visão geral da expedição! Clique em cada cartão para ver mais e testar no mini-quiz.
+  Depois siga para a Leitura Guiada. 🚀</p>
+</header>
+
+<main>
+  <div class="central">
+    <h2>🧭 As duas trilhas da prova</h2>
+    <div class="tl">
+      <div class="marco"><span class="e">♻️</span><b>Trilha dos Resíduos</b><br>Cap. 9: consumo e geração de resíduos</div>
+      <div class="marco"><span class="e">💧</span><b>Trilha da Água</b><br>Cap. 10: como lidamos com a água</div>
+    </div>
+  </div>
+
+  <div class="grade" id="grade"></div>
+
+  <div class="resumao">
+    <h2>⭐ Resumão da Prova — palavras que mais caem</h2>
+    <div class="chips">
+      <span class="chip">Lixo × Resíduo</span><span class="chip">Coleta seletiva</span>
+      <span class="chip">Orgânico × reciclável</span><span class="chip">Lixeira laranja</span>
+      <span class="chip">Lixão × Aterro</span><span class="chip">Poluição (ar, água, solo)</span>
+      <span class="chip">3 Rs</span><span class="chip">Rio Jundiaí</span>
+      <span class="chip">Água potável</span><span class="chip">Palafita</span>
+      <span class="chip">Cisterna</span><span class="chip">Direito à água (2023)</span>
+      <span class="chip">Irrigação</span><span class="chip">Usina hidrelétrica</span>
+    </div>
+  </div>
+
+  <div class="trilha"><a href="leitura_guiada.html">Começar pela Leitura Guiada 📖 →</a></div>
+</main>
+
+<script>
+const CORES=['#2fa66a','#1b74c4','#7a5230','#ef6f53','#8e44ad','#0f9b9b','#e67e22','#16a085'];
+const CARDS=[
+ {emoji:'🗑️',titulo:'Lixo × Resíduo',resumo:'Nem tudo que jogamos fora é lixo!',
+  mais:'<b>Lixo</b> não pode ser reaproveitado. <b>Resíduo</b> pode ser reciclado ou reaproveitado e vira nova matéria-prima.',
+  mq:'Um material que pode ser reciclado é chamado de:',o:['Lixo','Resíduo','Poluição'],c:1},
+ {emoji:'♻️',titulo:'Tipos e coleta seletiva',resumo:'Orgânico e reciclável, separados por cor.',
+  mais:'<b>Orgânicos</b>: restos de comida e poda. <b>Recicláveis</b>: papel, plástico, metal e vidro. Separar por tipo = <b>coleta seletiva</b>. Pilhas e baterias = lixeira <b>laranja</b>.',
+  mq:'Onde vão as pilhas e baterias?',o:['Lixo comum','Lixeira laranja','No rio'],c:1},
+ {emoji:'🏞️',titulo:'Lixão × Aterro',resumo:'Para onde vai o resíduo da cidade.',
+  mais:'<b>Lixão</b>: a céu aberto, polui muito, é proibido. <b>Aterro sanitário</b>: camada impermeável, polui menos.',
+  mq:'Qual é proibido por lei?',o:['O aterro sanitário','O lixão','A cisterna'],c:1},
+ {emoji:'🌫️',titulo:'Poluição',resumo:'Mudança que faz mal à natureza.',
+  mais:'Três tipos: <b>do ar</b>, <b>da água</b> e <b>do solo</b>. Resíduo na rua entope bueiro e causa <b>alagamento</b>. O rio <b>Jundiaí</b> foi o 1º do Brasil despoluído.',
+  mq:'Bueiro entupido na chuva forte causa:',o:['Alagamento','Reciclagem','Irrigação'],c:0},
+ {emoji:'3️⃣',titulo:'Os 3 Rs',resumo:'Reduzir, Reutilizar e Reciclar.',
+  mais:'<b>Reduzir</b>: consumir menos. <b>Reutilizar</b>: usar de novo. <b>Reciclar</b>: virar matéria-prima nova.',
+  mq:'Transformar papel usado em papel novo é:',o:['Reduzir','Reutilizar','Reciclar'],c:2},
+ {emoji:'💧',titulo:'A água no Brasil',resumo:'Muda de região para região.',
+  mais:'Amazônia: muitos rios, <b>palafitas</b>. Nordeste seco: <b>cisternas</b> guardam a água da chuva.',
+  mq:'A casa sobre estacas na água é a:',o:['Cisterna','Palafita','Barragem'],c:1},
+ {emoji:'🚰',titulo:'Direito e desperdício',resumo:'Água potável é para beber.',
+  mais:'Em <b>2023</b>, o acesso à água virou <b>direito fundamental</b> no Brasil. Desperdício causa problemas ambientais e sociais.',
+  mq:'Água que dá para beber é chamada de:',o:['Água potável','Água do lixão','Chorume'],c:0},
+ {emoji:'⚡',titulo:'Usos da água',resumo:'Agropecuária, indústria e energia.',
+  mais:'<b>Irrigação</b> rega as plantas. A <b>indústria</b> usa na produção, resfriamento e limpeza. A <b>usina hidrelétrica</b> gera energia com a força da água.',
+  mq:'A principal energia do Brasil vem de:',o:['Usina hidrelétrica','Lixão','Cisterna'],c:0}
+];
+
+const grade=document.getElementById('grade');
+CARDS.forEach((cd,i)=>{
+  const cor=CORES[i%CORES.length];
+  const div=document.createElement('div'); div.className='cardm'; div.style.setProperty('--cor',cor);
+  let ops='';
+  cd.o.forEach((op,k)=>{ ops+='<button data-i="'+i+'" data-k="'+k+'">'+op+'</button>'; });
+  div.innerHTML=
+    '<h3><span class="emoji">'+cd.emoji+'</span>'+cd.titulo+'</h3>'+
+    '<div class="resumo">'+cd.resumo+'</div>'+
+    '<div class="mais">'+cd.mais+
+      '<div class="mini"><div class="mq">🎯 '+cd.mq+'</div>'+ops+'<div class="fb" id="fb'+i+'"></div></div>'+
+    '</div>'+
+    '<button class="btn-mais" data-toggle="'+i+'">Ver mais ⬇️</button>';
+  grade.appendChild(div);
+});
+
+grade.addEventListener('click',e=>{
+  const tg=e.target.closest('.btn-mais');
+  if(tg){ const i=+tg.dataset.toggle; const card=tg.closest('.cardm');
+    card.classList.toggle('aberto');
+    tg.textContent=card.classList.contains('aberto')?'Ver menos ⬆️':'Ver mais ⬇️'; return; }
+  const b=e.target.closest('.mini button');
+  if(b){ const i=+b.dataset.i,k=+b.dataset.k; const cd=CARDS[i];
+    const botoes=b.parentElement.querySelectorAll('button');
+    botoes.forEach((bb,kk)=>{ bb.disabled=true; if(kk===cd.c) bb.classList.add('certa'); });
+    const fb=document.getElementById('fb'+i);
+    if(k===cd.c){ b.classList.add('certa'); fb.textContent='🎉 Isso mesmo! Mandou bem!'; fb.style.color='#1e7d4d'; }
+    else { b.classList.add('errada'); fb.textContent='🤔 Quase! A resposta certa está em verde.'; fb.style.color='#c0392b'; }
+    fb.style.display='block';
+  }
+});
+</script>
+</body>
+</html>
