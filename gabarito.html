@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gabarito comentado 📖 — Expedição Planeta Azul</title>
+<style>
+  :root{
+    --azul:#1b74c4; --azul-esc:#0d4d86; --verde:#2fa66a; --verde-esc:#1e7d4d;
+    --areia:#f6ecd2; --sol:#ffb703; --coral:#ef6f53; --txt:#2a2a2a; --branco:#fffdf7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Comic Sans MS','Segoe UI',sans-serif;color:var(--txt);
+    background:linear-gradient(180deg,#bfe6ff 0%,#dff3e6 40%,var(--areia) 100%);
+    background-attachment:fixed;line-height:1.5;padding-bottom:60px}
+  .nav{position:sticky;top:0;z-index:50;background:var(--azul-esc);
+    display:flex;flex-wrap:wrap;gap:4px;justify-content:center;padding:8px;box-shadow:0 3px 10px rgba(0,0,0,.25)}
+  .nav a{color:#fff;text-decoration:none;font-weight:bold;font-size:.85rem;padding:7px 11px;border-radius:20px;background:rgba(255,255,255,.12)}
+  .nav a:hover,.nav a.atual{background:var(--sol);color:#333}
+  header.hero{text-align:center;padding:20px 16px 6px}
+  header.hero h1{font-size:1.9rem;color:var(--azul-esc);margin:6px 0;text-shadow:1px 1px 0 #fff}
+  header.hero p{max-width:640px;margin:6px auto}
+  .mascote{font-size:2.6rem}
+  main{max-width:780px;margin:0 auto;padding:0 14px}
+  .aviso{background:#fff3cd;border:2px solid var(--sol);border-radius:12px;padding:10px 14px;margin:12px 0;text-align:center;font-weight:bold}
+  /* tabela rápida */
+  h2.sec{color:var(--azul-esc);text-align:center;margin:22px 0 10px}
+  table.rap{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 10px rgba(0,0,0,.1)}
+  table.rap td,table.rap th{border:1px solid #d9e4f2;padding:7px;text-align:center;font-size:.9rem}
+  table.rap th{background:var(--azul);color:#fff}
+  table.rap td b{color:var(--verde-esc)}
+  /* questao */
+  .qg{background:var(--branco);border-radius:16px;padding:16px 18px;margin:14px 0;box-shadow:0 5px 14px rgba(0,0,0,.1);border-left:10px solid var(--verde)}
+  .qg .qn{color:var(--coral);font-weight:bold}
+  .qg .qt{font-weight:bold;margin:6px 0 10px}
+  .op{padding:8px 12px;border-radius:10px;margin:5px 0;font-size:.96rem}
+  .op.certa{background:#d7f5e1;border:2px solid var(--verde);font-weight:bold}
+  .op.errada{background:#f1f1f1;color:#777}
+  .why{margin-top:10px;color:var(--verde-esc);font-weight:bold}
+  .postit{background:#fff59d;padding:10px 12px;border-radius:6px;margin-top:10px;box-shadow:1px 2px 5px rgba(0,0,0,.15);font-size:.92rem}
+  .postit b{color:var(--coral)}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html">🏠 Início</a>
+  <a href="mapa_mental.html">🧠 Mapa Mental</a>
+  <a href="leitura_guiada.html">📖 Leitura Guiada</a>
+  <a href="resumo.html">🗺️ Resumo</a>
+  <a href="jogo_vf.html">✅ Verdadeiro ou Falso</a>
+  <a href="simulado.html">📝 Simulado</a>
+</nav>
+
+<header class="hero">
+  <span class="mascote">📖✅</span>
+  <h1>Gabarito comentado</h1>
+  <p>Aqui estão as respostas do Simulado com a explicação de cada uma. Ideal para o(a)
+  responsável conferir junto com a criança. 💚</p>
+</header>
+
+<main>
+<div class="aviso">👩‍🏫 Para o adulto: confira a resposta certa (em verde) e leia o porquê. As dicas em
+amarelo ajudam a fixar.</div>
+
+<h2 class="sec">✅ Tabela rápida de respostas</h2>
+<table class="rap" id="tabela"></table>
+
+<h2 class="sec">📝 Questão por questão</h2>
+<div id="lista"></div>
+</main>
+
+<script>
+const G=[
+ {o:['Um material que já apodreceu e virou gás','Todo material que jogamos fora e não serve mais',
+     'Um material descartado que pode ser reciclado ou reaproveitado','Um tipo de poluição do ar'],c:2,
+   why:'Resíduo é o que pode ser reciclado ou reaproveitado. O que não serve mais (letra B) é o lixo.',
+   dica:'Resíduo PODE voltar a ser usado; lixo, não.'},
+ {o:['Orgânicos','Recicláveis','Perigosos','Metálicos'],c:0,
+   why:'Restos de comida e poda são resíduos orgânicos. Recicláveis são papel, plástico, metal e vidro.',
+   dica:'Orgânico = veio de planta/comida e apodrece.'},
+ {o:['No lixo comum da cozinha','Junto com o papel para reciclar','Enterradas no quintal','Em pontos de coleta, na lixeira laranja'],c:3,
+   why:'Pilhas e baterias são resíduos perigosos (têm produtos tóxicos): vão em pontos de coleta, na lixeira laranja.',
+   dica:'🟧 Lixeira laranja = pilhas e baterias.'},
+ {o:['Poluição','Coleta seletiva','Irrigação','Desperdício'],c:1,
+   why:'Separar por tipo de material é a coleta seletiva. Irrigação é regar plantas.',
+   dica:'Coleta seletiva = separar por material.'},
+ {o:['É o lugar mais seguro para os resíduos','Tem uma camada que impede vazamentos',
+     'Deixa os resíduos a céu aberto, polui muito e é proibido por lei','Só recebe pilhas e baterias'],c:2,
+   why:'O lixão fica a céu aberto, polui muito e é proibido. Quem tem camada impermeável é o aterro (letra B).',
+   dica:'Lixão = proibido. Aterro = permitido.'},
+ {o:['Tem camada impermeável e polui menos','Fica totalmente a céu aberto','Não precisa de nenhum cuidado','Serve para guardar água da chuva'],c:0,
+   why:'O aterro tem camada impermeável que evita vazamentos e por isso polui menos que o lixão.',
+   dica:'Aterro polui MENOS, mas ainda tem impacto.'},
+ {o:['Separar corretamente os resíduos','Toda mudança prejudicial à natureza e aos seres vivos',
+     'Guardar a água da chuva','Reaproveitar garrafas'],c:1,
+   why:'Poluição é toda mudança prejudicial à natureza e aos seres vivos. As outras são atitudes boas.',
+   dica:'Poluição = faz MAL à natureza.'},
+ {o:['Porque a água evapora mais rápido','Porque limpa as ruas','Porque deixa a água mais bonita',
+     'Porque os resíduos entopem os bueiros e a água não escoa'],c:3,
+   why:'Resíduos jogados na rua entopem os bueiros; sem escoar, a água alaga tudo.',
+   dica:'🌧️ Bueiro entupido = alagamento.'},
+ {o:['O rio Jundiaí','O rio Amazonas','O rio São Francisco','O rio Tietê'],c:0,
+   why:'O rio Jundiaí (SP) foi o primeiro rio do Brasil a ser despoluído.',
+   dica:'1º rio despoluído do Brasil = Jundiaí.'},
+ {o:['Rio, Rua e Reservatório','Recolher, Rasgar e Reaproveitar','Reduzir, Reutilizar e Reciclar','Regar, Remover e Reformar'],c:2,
+   why:'Os 3 Rs são Reduzir, Reutilizar e Reciclar.',
+   dica:'♻️ 3 Rs: Reduzir, Reutilizar, Reciclar.'},
+ {o:['Reciclar','Reutilizar','Poluir','Descartar'],c:1,
+   why:'Dar um novo uso ao objeto (sem transformar) é reutilizar. Reciclar seria transformar em material novo.',
+   dica:'Reutilizar = usar de novo do mesmo jeito.'},
+ {o:['Aumenta a poluição do ar','Não muda nada na natureza','Só serve para enfeitar',
+     'Evita cortar quase 20 árvores e economiza 10 mil litros de água'],c:3,
+   why:'Uma tonelada de papel reciclado evita cortar quase 20 árvores e economiza 10 mil litros de água.',
+   dica:'Reciclar papel salva árvores e água! 🌳💧'},
+ {o:['A água segura para o consumo humano (que dá para beber)','Toda água que encontramos na rua',
+     'A água usada só para lavar o chão','A água contaminada dos lixões'],c:0,
+   why:'Água potável é a água segura para beber. Nem toda água é potável.',
+   dica:'Potável = pode beber.'},
+ {o:['Cisterna','Barragem','Palafita','Aterro'],c:2,
+   why:'A casa sobre estacas, acima da água, é a palafita, típica dos ribeirinhos.',
+   dica:'Palafita = casa sobre estacas na água.'},
+ {o:['Palafitas','Cisternas','Bueiros','Turbinas'],c:1,
+   why:'A cisterna guarda a água da chuva, muito usada onde chove pouco.',
+   dica:'Cisterna = guarda água da chuva.'},
+ {o:['A água foi proibida nas cidades','Todos os rios secaram','Acabaram as usinas hidrelétricas',
+     'O acesso à água virou um direito fundamental na Constituição'],c:3,
+   why:'Em 2023, o acesso à água virou direito fundamental na Constituição do Brasil.',
+   dica:'2023 = água vira direito fundamental.'},
+ {o:['Apenas alegria para as plantas','Mais água nos rios','Problemas ambientais e sociais','Nenhum problema'],c:2,
+   why:'O desperdício causa problemas ambientais (menos água nos rios/lagos) e sociais (menos água para as pessoas).',
+   dica:'Desperdício = problema ambiental E social.'},
+ {o:['Irrigação','Reciclagem','Triagem','Poluição'],c:0,
+   why:'Fornecer água às plantas de forma artificial é a irrigação.',
+   dica:'Irrigação = regar as plantas.'},
+ {o:['Manual','Mecanizada','Natural','Proibida'],c:1,
+   why:'Com máquinas, em grandes fazendas, é a irrigação mecanizada. Com regador/mangueira, é manual.',
+   dica:'Máquina grande = mecanizada; regador = manual.'},
+ {o:['Apenas para os funcionários beberem','Somente para gerar energia','Só para regar plantas',
+     'Na produção, no resfriamento das máquinas e na limpeza'],c:3,
+   why:'A indústria usa água na produção, no resfriamento das máquinas e na limpeza.',
+   dica:'3 usos na indústria: produzir, resfriar, limpar.'},
+ {o:['Usinas hidrelétricas, usando a força da água','Queima de resíduos nos lixões',
+     'Cisternas de água da chuva','Aterros sanitários'],c:0,
+   why:'No Brasil, a principal forma de gerar energia é a usina hidrelétrica, que usa a força da água.',
+   dica:'⚡ Energia do Brasil = hidrelétrica.'},
+ {o:['Não causa nenhum impacto','É a que mais polui o ar','Inunda grandes áreas e faz famílias se mudarem','Só funciona à noite'],c:2,
+   why:'A energia hidrelétrica é limpa, mas para construir a usina inunda-se uma grande área e famílias se mudam.',
+   dica:'Hidrelétrica é limpa, mas inunda áreas.'},
+ {o:['A cisterna','A turbina','O aterro','A palafita'],c:1,
+   why:'A força da água gira a turbina, que aciona o gerador e produz energia.',
+   dica:'Água → gira a TURBINA → gera energia.'},
+ {o:['Porque o solo evapora','Porque a água sobe para o céu','Porque o vento leva o solo para o mar',
+     'Porque o líquido tóxico se infiltra no solo e chega ao aquífero'],c:3,
+   why:'O líquido tóxico dos resíduos se infiltra no solo e chega ao aquífero, contaminando a água.',
+   dica:'Líquido tóxico desce e contamina a água subterrânea.'},
+ {o:['Jogar todo resíduo no rio','Queimar o lixo no quintal',
+     'Reduzir o consumo, separar os resíduos e não desperdiçar água','Deixar a torneira sempre aberta'],c:2,
+   why:'Reduzir o consumo, separar os resíduos e economizar água são as melhores atitudes para o planeta.',
+   dica:'Cuidar do planeta = reduzir, separar e economizar.'}
+];
+/* perguntas (mesmo texto do simulado) só para o cabeçalho */
+const TITULOS=[
+ 'O que é um resíduo?',
+ 'Restos de comida, casca de fruta e grama cortada são resíduos:',
+ 'Pilhas e baterias usadas devem ser descartadas:',
+ 'Separar o resíduo por tipo de material é chamado de:',
+ 'Sobre o lixão, é correto afirmar que ele:',
+ 'Qual é a vantagem do aterro sanitário em relação ao lixão?',
+ 'Poluição pode ser definida como:',
+ 'Por que jogar resíduos na rua pode causar alagamentos?',
+ 'Qual foi o primeiro rio do Brasil a ser despoluído?',
+ 'Os famosos 3 Rs da sustentabilidade são:',
+ 'Transformar um pote de sorvete vazio em porta-lápis é:',
+ 'Reciclar uma tonelada de papel:',
+ 'O que é água potável?',
+ 'A casa dos ribeirinhos sobre estacas acima da água chama-se:',
+ 'Onde as pessoas guardam a água da chuva quando chove pouco?',
+ 'O que aconteceu no Brasil em 2023 em relação à água?',
+ 'O desperdício de água causa:',
+ 'Fornecer água às plantas de forma artificial chama-se:',
+ 'Regar muitas plantas com máquinas em uma grande fazenda é irrigação:',
+ 'Em quais etapas a indústria costuma usar água?',
+ 'No Brasil, a principal forma de gerar energia elétrica é:',
+ 'A energia das hidrelétricas é limpa, mas também:',
+ 'Na usina, o que a força da água faz girar?',
+ 'Por que a poluição do solo pode virar poluição da água?',
+ 'Qual atitude ajuda mais a cuidar do planeta?'
+];
+
+/* tabela rápida em 5 colunas */
+const tab=document.getElementById('tabela');
+let linhas=''; const porLinha=5;
+for(let i=0;i<G.length;i+=porLinha){
+  let th='',td='';
+  for(let j=i;j<Math.min(i+porLinha,G.length);j++){ th+='<th>'+(j+1)+'</th>'; td+='<td><b>'+'ABCD'[G[j].c]+'</b></td>'; }
+  linhas+='<tr>'+th+'</tr><tr>'+td+'</tr>';
+}
+tab.innerHTML=linhas;
+
+/* lista comentada */
+const lista=document.getElementById('lista');
+G.forEach((g,i)=>{
+  let ops='';
+  g.o.forEach((op,k)=>{ ops+='<div class="op '+(k===g.c?'certa':'errada')+'">'+'ABCD'[k]+') '+op+(k===g.c?' ✅':'')+'</div>'; });
+  const div=document.createElement('div'); div.className='qg';
+  div.innerHTML='<div class="qn">Questão '+(i+1)+'</div><div class="qt">'+TITULOS[i]+'</div>'+ops+
+    '<div class="why">👉 Resposta certa: letra '+'ABCD'[g.c]+'. '+g.why+'</div>'+
+    '<div class="postit"><b>💡 Dica:</b> '+g.dica+'</div>';
+  lista.appendChild(div);
+});
+</script>
+</body>
+</html>
