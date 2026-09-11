@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulado 📝 — Expedição Planeta Azul</title>
+<style>
+  :root{
+    --azul:#1b74c4; --azul-esc:#0d4d86; --verde:#2fa66a; --verde-esc:#1e7d4d;
+    --areia:#f6ecd2; --sol:#ffb703; --coral:#ef6f53; --txt:#2a2a2a; --branco:#fffdf7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Comic Sans MS','Segoe UI',sans-serif;color:var(--txt);
+    background:linear-gradient(180deg,#bfe6ff 0%,#dff3e6 40%,var(--areia) 100%);
+    background-attachment:fixed;line-height:1.5;padding-bottom:60px}
+  .nav{position:sticky;top:0;z-index:50;background:var(--azul-esc);
+    display:flex;flex-wrap:wrap;gap:4px;justify-content:center;padding:8px;box-shadow:0 3px 10px rgba(0,0,0,.25)}
+  .nav a{color:#fff;text-decoration:none;font-weight:bold;font-size:.85rem;padding:7px 11px;border-radius:20px;background:rgba(255,255,255,.12)}
+  .nav a:hover,.nav a.atual{background:var(--sol);color:#333}
+  header.hero{text-align:center;padding:20px 16px 6px}
+  header.hero .selo{font-size:.9rem;color:var(--verde-esc);font-weight:bold;letter-spacing:1px}
+  header.hero h1{font-size:2rem;color:var(--azul-esc);margin:6px 0;text-shadow:1px 1px 0 #fff}
+  .mascote{font-size:2.6rem}
+  .quiz{max-width:700px;margin:6px auto;padding:0 14px}
+  .topo{display:flex;justify-content:space-between;align-items:center;background:var(--branco);
+    border-radius:14px;padding:10px 16px;box-shadow:0 4px 10px rgba(0,0,0,.12);font-weight:bold;color:var(--azul-esc)}
+  .barra{height:16px;background:#e6e6e6;border-radius:10px;overflow:hidden;margin:12px 0}
+  .barra > div{height:100%;width:0;background:linear-gradient(90deg,var(--verde),var(--azul));transition:width .4s}
+  .card{background:var(--branco);border-radius:18px;padding:22px;box-shadow:0 8px 22px rgba(0,0,0,.14)}
+  .qnum{color:var(--coral);font-weight:bold;font-size:.95rem}
+  .qtexto{font-size:1.15rem;font-weight:bold;margin:8px 0 14px}
+  .opcao{display:block;width:100%;text-align:left;background:#fff;border:2px solid #cfe0f2;border-radius:12px;
+    padding:12px 14px;margin:8px 0;cursor:pointer;font-size:1rem;font-family:inherit}
+  .opcao:hover{border-color:var(--azul);background:#eef6ff}
+  .opcao.sel{border-color:var(--azul);background:#dbeaff;font-weight:bold}
+  .barrabtn{display:flex;justify-content:space-between;gap:10px;margin-top:16px}
+  .barrabtn button{border:none;border-radius:24px;padding:12px 22px;font-size:1rem;font-weight:bold;
+    cursor:pointer;font-family:inherit;color:#fff}
+  .bt-ant{background:#9aa7b3}.bt-ant:hover{background:#7a8894}
+  .bt-prox{background:var(--azul)}.bt-prox:hover{background:var(--azul-esc)}
+  .bt-fim{background:var(--verde)}.bt-fim:hover{background:var(--verde-esc)}
+  .bolinhas{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:14px 0}
+  .bolinha{width:26px;height:26px;border-radius:50%;background:#e0e0e0;color:#555;font-size:.8rem;font-weight:bold;
+    display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .bolinha.resp{background:var(--verde);color:#fff}
+  .bolinha.atual{outline:3px solid var(--sol)}
+  /* RESULTADO */
+  .result{display:none;text-align:center;background:var(--branco);border-radius:20px;padding:30px 22px;
+    box-shadow:0 8px 22px rgba(0,0,0,.15)}
+  .result .trofeu{font-size:4rem}
+  .result h2{color:var(--azul-esc);font-size:1.6rem}
+  .result .nota{font-size:1.5rem;font-weight:bold;margin:12px 0}
+  .result .msg{font-size:1.15rem;color:var(--verde-esc);margin:8px 0}
+  .result button,.result a{display:inline-block;background:var(--sol);color:#333;border:none;border-radius:26px;
+    padding:13px 24px;font-size:1.05rem;font-weight:bold;cursor:pointer;font-family:inherit;margin:8px 6px;text-decoration:none}
+  .result a.gab{background:var(--coral);color:#fff}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html">🏠 Início</a>
+  <a href="mapa_mental.html">🧠 Mapa Mental</a>
+  <a href="leitura_guiada.html">📖 Leitura Guiada</a>
+  <a href="resumo.html">🗺️ Resumo</a>
+  <a href="jogo_vf.html">✅ Verdadeiro ou Falso</a>
+  <a href="simulado.html" class="atual">📝 Simulado</a>
+</nav>
+
+<header class="hero">
+  <span class="mascote">📝🧭</span><br>
+  <span class="selo">EXPEDIÇÃO PLANETA AZUL • 3º ANO • GEOGRAFIA</span>
+  <h1>📝 Simulado Final</h1>
+  <p>25 desafios para você mostrar tudo o que aprendeu! Escolha uma resposta em cada questão.
+  Pode voltar e trocar. No fim, confira o resultado e o gabarito. 🚀</p>
+</header>
+
+<div class="quiz">
+  <div class="topo">
+    <span id="contador">Questão 1 de 25</span>
+    <span id="respondidas">Respondidas: 0/25</span>
+  </div>
+  <div class="barra"><div id="fill"></div></div>
+
+  <div class="card" id="card">
+    <div class="qnum" id="qnum">Questão 1</div>
+    <div class="qtexto" id="qtexto"></div>
+    <div id="opcoes"></div>
+    <div class="barrabtn">
+      <button class="bt-ant" id="btAnt">⬅️ Voltar</button>
+      <button class="bt-prox" id="btProx">Próxima ➡️</button>
+    </div>
+    <div class="bolinhas" id="bolinhas"></div>
+    <div style="text-align:center;margin-top:6px">
+      <button class="bt-fim" id="btFim">✅ Terminar e ver resultado</button>
+    </div>
+  </div>
+
+  <div class="result" id="result">
+    <div class="trofeu" id="trofeu">🏆</div>
+    <h2>Simulado concluído!</h2>
+    <div class="nota" id="nota"></div>
+    <div class="msg" id="msg"></div>
+    <a href="gabarito.html" class="gab" target="_blank">📖 Ver Gabarito comentado</a>
+    <button id="btRefazer">🔄 Refazer o simulado</button>
+    <a href="index.html">🏠 Voltar ao início</a>
+  </div>
+</div>
+
+<script>
+/* 25 questões inéditas — conteúdo do livro Phases Geografia 3 – Livro 2, Cap. 9 e 10.
+   O gabarito.html usa exatamente as mesmas respostas. */
+const Q=[
+ {q:'O que é um resíduo?',
+  o:['Um material que já apodreceu e virou gás','Todo material que jogamos fora e não serve mais',
+     'Um material descartado que pode ser reciclado ou reaproveitado','Um tipo de poluição do ar'],c:2},
+ {q:'Restos de comida, casca de fruta e grama cortada são resíduos:',
+  o:['Orgânicos','Recicláveis','Perigosos','Metálicos'],c:0},
+ {q:'Pilhas e baterias usadas devem ser descartadas:',
+  o:['No lixo comum da cozinha','Junto com o papel para reciclar','Enterradas no quintal','Em pontos de coleta, na lixeira laranja'],c:3},
+ {q:'Separar o resíduo por tipo de material (papel, plástico, vidro e metal) é chamado de:',
+  o:['Poluição','Coleta seletiva','Irrigação','Desperdício'],c:1},
+ {q:'Sobre o lixão, é correto afirmar que ele:',
+  o:['É o lugar mais seguro para os resíduos','Tem uma camada que impede vazamentos',
+     'Deixa os resíduos a céu aberto, polui muito e é proibido por lei','Só recebe pilhas e baterias'],c:2},
+ {q:'Qual é a vantagem do aterro sanitário em relação ao lixão?',
+  o:['Tem camada impermeável e polui menos','Fica totalmente a céu aberto','Não precisa de nenhum cuidado','Serve para guardar água da chuva'],c:0},
+ {q:'Poluição pode ser definida como:',
+  o:['Separar corretamente os resíduos','Toda mudança prejudicial à natureza e aos seres vivos',
+     'Guardar a água da chuva','Reaproveitar garrafas'],c:1},
+ {q:'Por que jogar resíduos na rua pode causar alagamentos quando chove forte?',
+  o:['Porque a água evapora mais rápido','Porque limpa as ruas','Porque deixa a água mais bonita',
+     'Porque os resíduos entopem os bueiros e a água não escoa'],c:3},
+ {q:'Qual foi o primeiro rio do Brasil a ser despoluído?',
+  o:['O rio Jundiaí','O rio Amazonas','O rio São Francisco','O rio Tietê'],c:0},
+ {q:'Os famosos 3 Rs da sustentabilidade são:',
+  o:['Rio, Rua e Reservatório','Recolher, Rasgar e Reaproveitar','Reduzir, Reutilizar e Reciclar','Regar, Remover e Reformar'],c:2},
+ {q:'Transformar um pote de sorvete vazio em porta-lápis é um exemplo de:',
+  o:['Reciclar','Reutilizar','Poluir','Descartar'],c:1},
+ {q:'Reciclar uma tonelada de papel:',
+  o:['Aumenta a poluição do ar','Não muda nada na natureza','Só serve para enfeitar',
+     'Evita cortar quase 20 árvores e economiza 10 mil litros de água'],c:3},
+ {q:'O que é água potável?',
+  o:['A água segura para o consumo humano (que dá para beber)','Toda água que encontramos na rua',
+     'A água usada só para lavar o chão','A água contaminada dos lixões'],c:0},
+ {q:'A casa dos ribeirinhos, construída sobre estacas de madeira acima da água, chama-se:',
+  o:['Cisterna','Barragem','Palafita','Aterro'],c:2},
+ {q:'Em regiões onde chove pouco, as pessoas guardam a água da chuva em:',
+  o:['Palafitas','Cisternas','Bueiros','Turbinas'],c:1},
+ {q:'O que aconteceu no Brasil em 2023 em relação à água?',
+  o:['A água foi proibida nas cidades','Todos os rios secaram','Acabaram as usinas hidrelétricas',
+     'O acesso à água virou um direito fundamental na Constituição'],c:3},
+ {q:'O desperdício de água causa:',
+  o:['Apenas alegria para as plantas','Mais água nos rios','Problemas ambientais e sociais','Nenhum problema'],c:2},
+ {q:'Fornecer água às plantas de forma artificial, na agricultura, chama-se:',
+  o:['Irrigação','Reciclagem','Triagem','Poluição'],c:0},
+ {q:'Regar muitas plantas ao mesmo tempo, com máquinas, em uma grande fazenda, é irrigação:',
+  o:['Manual','Mecanizada','Natural','Proibida'],c:1},
+ {q:'Em quais etapas a indústria costuma usar água?',
+  o:['Apenas para os funcionários beberem','Somente para gerar energia','Só para regar plantas',
+     'Na produção, no resfriamento das máquinas e na limpeza'],c:3},
+ {q:'No Brasil, a principal forma de gerar energia elétrica é por meio de:',
+  o:['Usinas hidrelétricas, usando a força da água','Queima de resíduos nos lixões',
+     'Cisternas de água da chuva','Aterros sanitários'],c:0},
+ {q:'A energia gerada pelas hidrelétricas é considerada limpa, mas também:',
+  o:['Não causa nenhum impacto','É a que mais polui o ar','Inunda grandes áreas e faz famílias se mudarem','Só funciona à noite'],c:2},
+ {q:'Na usina hidrelétrica, o que a força da água faz girar para ajudar a gerar energia?',
+  o:['A cisterna','A turbina','O aterro','A palafita'],c:1},
+ {q:'Por que a poluição do solo pode virar poluição da água?',
+  o:['Porque o solo evapora','Porque a água sobe para o céu','Porque o vento leva o solo para o mar',
+     'Porque o líquido tóxico se infiltra no solo e chega ao aquífero'],c:3},
+ {q:'Qual atitude ajuda mais a cuidar do planeta?',
+  o:['Jogar todo resíduo no rio','Queimar o lixo no quintal',
+     'Reduzir o consumo, separar os resíduos e não desperdiçar água','Deixar a torneira sempre aberta'],c:2}
+];
+
+let atual=0;
+let resp=new Array(Q.length).fill(null);
+
+const opcoesDiv=document.getElementById('opcoes');
+const bolDiv=document.getElementById('bolinhas');
+
+function render(){
+  const item=Q[atual];
+  document.getElementById('qnum').textContent='Questão '+(atual+1);
+  document.getElementById('contador').textContent='Questão '+(atual+1)+' de '+Q.length;
+  document.getElementById('qtexto').textContent=item.q;
+  opcoesDiv.innerHTML='';
+  item.o.forEach((op,k)=>{
+    const b=document.createElement('button');
+    b.className='opcao'+(resp[atual]===k?' sel':'');
+    b.textContent='ABCD'[k]+') '+op;
+    b.onclick=()=>{ resp[atual]=k; render(); };
+    opcoesDiv.appendChild(b);
+  });
+  document.getElementById('fill').style.width=Math.round((atual+1)/Q.length*100)+'%';
+  const nresp=resp.filter(r=>r!==null).length;
+  document.getElementById('respondidas').textContent='Respondidas: '+nresp+'/'+Q.length;
+  document.getElementById('btAnt').style.visibility=atual===0?'hidden':'visible';
+  document.getElementById('btProx').style.visibility=atual===Q.length-1?'hidden':'visible';
+  // bolinhas
+  bolDiv.innerHTML='';
+  Q.forEach((_,i)=>{
+    const bo=document.createElement('div');
+    bo.className='bolinha'+(resp[i]!==null?' resp':'')+(i===atual?' atual':'');
+    bo.textContent=i+1;
+    bo.onclick=()=>{ atual=i; render(); };
+    bolDiv.appendChild(bo);
+  });
+}
+document.getElementById('btAnt').onclick=()=>{ if(atual>0){atual--;render();} };
+document.getElementById('btProx').onclick=()=>{ if(atual<Q.length-1){atual++;render();} };
+document.getElementById('btFim').onclick=finalizar;
+document.getElementById('btRefazer').onclick=()=>{ resp=new Array(Q.length).fill(null); atual=0;
+  document.getElementById('result').style.display='none'; document.getElementById('card').style.display='block'; render(); };
+
+function finalizar(){
+  let acertos=0;
+  Q.forEach((item,i)=>{ if(resp[i]===item.c) acertos++; });
+  document.getElementById('card').style.display='none';
+  const r=document.getElementById('result'); r.style.display='block';
+  const pct=Math.round(acertos/Q.length*100);
+  document.getElementById('nota').innerHTML='Você acertou <b>'+acertos+' de '+Q.length+'</b> ('+pct+'%)';
+  let msg,trof;
+  if(pct>=80){ msg='Uau! Você é mestre da Expedição Planeta Azul! 🌍🏆'; trof='🏆'; }
+  else if(pct>=60){ msg='Muito bom! Dá uma revisada no Resumo e você arrasa na prova! 💪'; trof='🥈'; }
+  else if(pct>=40){ msg='Bom começo! Volte à Leitura Guiada para reforçar. 🚀'; trof='🥉'; }
+  else { msg='Vamos treinar mais! Releia a Leitura Guiada com calma. 🌱 Você consegue!'; trof='🌱'; }
+  document.getElementById('msg').textContent=msg;
+  document.getElementById('trofeu').textContent=trof;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+render();
+</script>
+</body>
+</html>
