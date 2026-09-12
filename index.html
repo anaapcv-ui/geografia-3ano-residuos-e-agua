@@ -106,7 +106,71 @@
     cada questão do simulado, com explicação e dicas, para acompanhar o estudo com a criança.</div>
   </div>
 
+  <div class="secao" id="sec-pais">
+    <h2>&#128202; Relatorio para os pais</h2>
+    <p>Digite o codigo da familia para ver o tempo de estudo e os acertos do explorador em cada material.</p>
+    <div id="pais-lock">
+      <input id="pais-cod" type="text" placeholder="Ex.: PAIS-77" autocomplete="off" style="padding:10px 12px;border-radius:10px;border:2px solid var(--azul);font-family:inherit;font-size:1rem;max-width:170px">
+      <button id="pais-btn" type="button" style="background:var(--azul);color:#fff;border:none;border-radius:10px;padding:11px 18px;font-weight:bold;cursor:pointer;font-family:inherit;font-size:1rem">Ver relatorio</button>
+      <div id="pais-erro" style="color:#c0392b;font-weight:bold;margin-top:8px;display:none">Codigo incorreto. Peca ajuda ou tente <b>PAIS-77</b>.</div>
+    </div>
+    <div id="pais-rel" style="display:none;margin-top:12px"></div>
+  </div>
+
   <div class="rodape">🌟 Bons estudos, explorador(a)! Cuidar do planeta começa por você! 🌍💚</div>
 </main>
+
+<!-- ===== RELATORIO PARA OS PAIS (enxerto skill /kit - 2026-09) ===== -->
+<script>
+(function(){
+  var CODIGO_FAMILIA='PAIS-77';
+  function g(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } }
+  function mmss(seg){ seg=seg||0; var m=Math.floor(seg/60), s=seg%60; return m+' min '+(s<10?'0':'')+s+'s'; }
+  function linha(nome, tempo, extra){
+    var t = tempo || {}; var tot = mmss(t.total||0), atv = mmss(t.ativo||0);
+    return '<tr><td style="padding:8px;border-bottom:1px solid #e3ecf5"><b>'+nome+'</b></td>'+
+      '<td style="padding:8px;border-bottom:1px solid #e3ecf5;text-align:center">'+tot+'</td>'+
+      '<td style="padding:8px;border-bottom:1px solid #e3ecf5;text-align:center">'+atv+'</td>'+
+      '<td style="padding:8px;border-bottom:1px solid #e3ecf5">'+(extra||'-')+'</td></tr>';
+  }
+  function montar(){
+    var le=g('geo3_leitura')||{}, ac=0, feitos=0;
+    for(var k in le){ if(le[k] && le[k].feito){ feitos++; ac+=(le[k].acertos||0); } }
+    var vf=g('geo3_vf'), sim=g('geo3_simulado'), sc=g('geo3_resumo_scroll');
+    var extraLe = feitos? (feitos+'/9 paradas - estrelas x'+ac) : '-';
+    var extraVf = vf? ('acertos: '+vf.acertos+'/'+vf.total) : '-';
+    var extraSim = sim? ('acertos: '+sim.acertos+'/'+sim.total+' - codigo '+sim.codigo) : '-';
+    var extraRes = sc? ('leu '+(sc.pct||0)+'% da pagina') : '-';
+    var html = '<div style="background:#eef6ff;border-radius:12px;padding:10px 14px;margin-bottom:10px;font-size:.9rem">'+
+      '&#9201; <b>Referencia para a mae/pai:</b> a leitura completa costuma levar cerca de <b>1 hora</b> de estudo ativo. '+
+      'E so uma referencia tranquila, nao uma cobranca.</div>'+
+      '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;font-size:.92rem">'+
+      '<tr style="background:var(--azul-esc);color:#fff">'+
+      '<th style="padding:8px;text-align:left">Material</th>'+
+      '<th style="padding:8px">Tempo total</th>'+
+      '<th style="padding:8px">Tempo ativo</th>'+
+      '<th style="padding:8px;text-align:left">Resultado</th></tr>'+
+      linha('Mapa Mental', g('geo3_mapa_tempo'), '-')+
+      linha('Leitura Guiada', g('geo3_leitura_tempo'), extraLe)+
+      linha('Resumo', g('geo3_resumo_tempo'), extraRes)+
+      linha('Verdadeiro ou Falso', g('geo3_vf_tempo'), extraVf)+
+      linha('Simulado', g('geo3_simulado_tempo'), extraSim)+
+      '</table></div>'+
+      '<p style="font-size:.85rem;color:#666;margin-top:10px">Os dados ficam guardados so neste computador/navegador. '+
+      'Se aparecer tudo zerado, e porque o material ainda nao foi estudado aqui.</p>';
+    document.getElementById('pais-rel').innerHTML = html;
+  }
+  function tentar(){
+    var v=(document.getElementById('pais-cod').value||'').trim().toUpperCase();
+    var sim=g('geo3_simulado');
+    var ok = (v===CODIGO_FAMILIA) || (sim && sim.codigo && v===String(sim.codigo).toUpperCase());
+    if(ok){ document.getElementById('pais-lock').style.display='none';
+      var rel=document.getElementById('pais-rel'); rel.style.display='block'; montar();
+    } else { document.getElementById('pais-erro').style.display='block'; }
+  }
+  document.getElementById('pais-btn').addEventListener('click', tentar);
+  document.getElementById('pais-cod').addEventListener('keydown', function(e){ if(e.key==='Enter') tentar(); });
+})();
+</script>
 </body>
 </html>
